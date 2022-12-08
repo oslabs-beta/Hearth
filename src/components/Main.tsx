@@ -3,7 +3,7 @@ import { LambdaClient, GetFunctionUrlConfigCommand, AddLayerVersionPermissionCom
 import * as AWS from "@aws-sdk/client-api-gateway";
 import * as React from 'react';
 
-const Main = () => {
+const Main = (props) => {
     const client = new LambdaClient({ credentials: {}, region: "us-west-1" });
 
     const input = {
