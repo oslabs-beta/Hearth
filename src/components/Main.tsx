@@ -4,11 +4,11 @@ import * as AWS from "@aws-sdk/client-api-gateway";
 import * as React from 'react';
 
 const Main = () => {
-    const client = new LambdaClient({ credentials: { accessKeyId: "AKIA5P7DBFOTL575L7BC" , secretAccessKey: "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"}, region: "us-west-1" });
+    const client = new LambdaClient({ credentials: {}, region: "us-west-1" });
 
     const input = {
       /** input parameters */
-      FunctionName: 'arn:aws:lambda:us-west-1:927652195238:function:Example3'
+      FunctionName: ''
     };
     
     const command = new GetFunctionUrlConfigCommand(input);
