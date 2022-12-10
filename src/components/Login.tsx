@@ -45,9 +45,9 @@ const Login = (props) => {
           <input className="inputLogin" type="password" id="password" placeholder='password'></input>
           <button onClick={handleSubmit} className="loginBtn" type="submit">Log in</button>
         </div>
-        {/* <div className='redirect'>
+        <div className='redirect'>
           <span className="redirectButton">Don't have an account? <Link id='link' to='/signup'>Sign Up Here</Link></span>
-        </div> */}
+        </div>
       </div>
     </form>
   );
