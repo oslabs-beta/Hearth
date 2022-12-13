@@ -13,8 +13,8 @@ const awsRouter = require(path.join(__dirname, './routes/awsRouter.js'));
 app.use(express.json());
 
 // ROUTER ROUTES
-app.use('/api/user', userRouter);
-app.use('/api/aws', awsRouter);
+app.use('/user', userRouter);
+app.use('/aws', awsRouter);
 
 // SERVE STATIC FILES
 app.use('/build', express.static(path.join(__dirname, '../dist')));
