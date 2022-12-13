@@ -12,7 +12,7 @@ import * as dotenv from 'dotenv'
 // dotenv.config();
 // fromEnv()
 
-const Main = () => {
+const Main = (props) => {
   const [funcs, setFuncs] = useState([]);
   // const [arn, setArn] = useState('');
   const [externalId, setExternalId] = useState(`${uuidv4()}`)
