@@ -12,24 +12,20 @@ const Login = (props) => {
       username: (document.getElementById('username') as HTMLInputElement).value,
       password: (document.getElementById('password') as HTMLInputElement).value
     }
-    //UNCOMMENT WHEN THE SERVER IS SET UP
-    /*
     const reqBody = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     }
 
-    const result = await fetch('/api/user/login', reqBody);
+
+    const result = await fetch('http://localhost:3000/user/login', reqBody);
     const data = await result.json();
     
-    if(data.result === true) {
-      navigate('/main');
-    } else {
-      alert('Incorrect username or password');
-    }
-    */
-    if(userData.username === 'code' && userData.password === 'smith') {
+    if(data.arn) {
+      props.handleRegionChange(data.region);
+      props.handleArnChange(data.arn);
+      props.handleExternalIdChange(data.externalId);
       navigate('/main');
     } else {
       alert('Incorrect username or password');

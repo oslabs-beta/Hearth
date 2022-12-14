@@ -9,7 +9,7 @@ router.post('/login', userController.login, (req, res) => {
 });
 
 router.post('/signup', userController.signUp, (req, res) => {
-  res.status(200).send('Signup Successful!')
+  res.status(200).json('Signup Successful!');
 });
 
 module.exports = router;

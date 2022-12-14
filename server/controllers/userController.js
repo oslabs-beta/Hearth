@@ -1,17 +1,38 @@
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
-
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 //DATABASE
-let dbClient = new DynamoDBDocumentClient({
+// Create an Amazon DynamoDB service client object.
+const ddbClient = new DynamoDBClient({
   region: process.env.AWS_DEFAULT_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
-})
+  } 
+});
+
+const marshallOptions = {
+  // Whether to automatically convert empty strings, blobs, and sets to `null`.
+  convertEmptyValues: false, // false, by default.
+  // Whether to remove undefined values while marshalling.
+  removeUndefinedValues: false, // false, by default.
+  // Whether to convert typeof object to map attribute.
+  convertClassInstanceToMap: false, // false, by default.
+};
+
+const unmarshallOptions = {
+  // Whether to return numbers as a string instead of converting them to native JavaScript numbers.
+  wrapNumbers: false, // false, by default.
+};
+
+const translateConfig = { marshallOptions, unmarshallOptions };
+
+let dbClient = DynamoDBDocument.from(ddbClient, translateConfig);
+
 const TABLE_NAME = 'hearthUsers';
+
 
 // CONTROLLER
 const userController = {};
@@ -22,16 +43,28 @@ userController.signUp = async (req, res, next) => {
 
   try {
     // query to db
+    const encryptedPass =  await bcrypt.hash(password, SALT_WORK_FACTOR);
+
+    const data = await dbClient.get({
+      TableName: TABLE_NAME,
+      Key: {
+        username: req.body.username
+      }
+    });
+
+    if (data.Item){
+      throw new Error('Username already exists');
+    }
     const result = await dbClient.put({
     Item: {
       username: req.body.username,
-      //ENCRYPT PASSWORD FIRST THEN ADD PASSWORD,
-      //ADD EXTERNAL ID,
-      //ADD REGION
-      arn: req.body.arn
+      password: encryptedPass,
+      arn: req.body.arn,
+      region: req.body.region,
+      externalId: req.body.externalId
     },
     TableName: TABLE_NAME,
-  }).promise();
+  });
     return next();
   } catch (err) {
       return next({
@@ -43,6 +76,7 @@ userController.signUp = async (req, res, next) => {
 
 // LOGIN CONTROLLER
 userController.login = async (req, res, next) => {
+   
   const { username, password } = req.body;
 
   try {
@@ -52,17 +86,14 @@ userController.login = async (req, res, next) => {
       Key: {
         username: req.body.username
       }
-    }).promise();
-
-    //ADD CODE TO check if the req.body.password is the same after encrypting as the stored password
-    
-    if (!data) throw new Error('Username or Password is incorrect');
+    });
+    if (!data.Item) throw new Error('Username or Password is incorrect');
     // compare password given and in db
-    const verified = await bcrypt.compare(password, data.password);
+    const verified = await bcrypt.compare(password, data.Item.password);
     // if verified returns false throw error
     if (!verified) throw new Error('Username or Password is incorrect');
-    const { arn, region, externalId } = data
-    res.locals.info = {arn, region, externalId};
+    const { arn, region, externalId } = data.Item;
+    res.locals.data = {arn, region, externalId};
     return next();
   } catch (err) {
     return next({
