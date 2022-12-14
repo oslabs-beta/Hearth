@@ -1,5 +1,5 @@
 const { LambdaClient, GetFunctionUrlConfigCommand, AddLayerVersionPermissionCommand, ListFunctionsCommand } = require("@aws-sdk/client-lambda");
-
+const fetch = require('node-fetch');
 const lambdaController = {};
 
 lambdaController.getFuncs = (req, res, next) => {
@@ -26,8 +26,10 @@ lambdaController.getFuncs = (req, res, next) => {
 }
 
 lambdaController.invokeFuncs = (req, res, next) => {
+  const client = new LambdaClient({ credentials: res.locals.creds, region: "us-west-1" });
   res.locals.funcs.forEach((el) => {
-    if (el.Name === req.body.name) {
+    if (el.Name === req.query.funcName) {
+      console.log(el.Arn)
       const input = {
         /** input parameters */
         FunctionName: `${el.Arn}`
@@ -37,9 +39,14 @@ lambdaController.invokeFuncs = (req, res, next) => {
         .then((data) => {
           // process data.
           //grab functionURL to obtain function name and ARN
+          console.log(data.FunctionUrl)
           fetch(data.FunctionUrl)
-          .then(data => data.json())
-          .then(data => console.log(data));
+          // .then(data => data.json())
+          // .then(data => console.log(data));
+
+
+          // const response = fetch(data.FunctionUrl);
+          // console.log(response.json());
           return next();
         })
         .catch((error) => {

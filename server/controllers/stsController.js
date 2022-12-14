@@ -19,7 +19,7 @@ stsController.getCreds = async (req, res, next) => {
   const params = {
       RoleArn: process.env.ROLE_ARN,
       RoleSessionName:"Hearth_Session",
-      ExternalId:process.env.EXTERNAL_ID
+      ExternalId: process.env.EXTERNAL_ID
   }
     // console.log(params)
   try {          
