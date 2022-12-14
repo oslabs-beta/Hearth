@@ -1,36 +1,39 @@
-import { APIGatewayClient, CreateApiKeyCommand, GetRestApisCommand } from "@aws-sdk/client-api-gateway";
-import { LambdaClient, GetFunctionUrlConfigCommand, AddLayerVersionPermissionCommand  } from "@aws-sdk/client-lambda";
-import * as AWS from "@aws-sdk/client-api-gateway";
 import * as React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import SideBar from './SideBar';
+import Functions from './Functions';
+
 
 const Main = (props) => {
-    const client = new LambdaClient({ credentials: {}, region: "us-west-1" });
+  const [funcName, setFuncName] = useState('');
 
-    const input = {
-      /** input parameters */
-      FunctionName: ''
-    };
-    
-    const command = new GetFunctionUrlConfigCommand(input);
-    
-    const gateway = () => {
-      client.send(command)
-      //   .createApiKey(params)
-        .then((data) => {
-          // process data.
-          console.log(data.FunctionUrl);
-          fetch(data.FunctionUrl)
-          .then(data => data.json())
-          .then(data => console.log(data));
-        })
-        .catch((error) => {
-          // error handling.
-          console.log('error');
-        });
-    }
-    return (
-      <button onClick={gateway}>hi</button>
-    )
+  const home = [];
+  home.push(
+    <div>
+      <h1>Welcome to Hearth</h1>
+      <img src='/Users/linda/Hearth/src/logo.png' height="300" width="450" />
+    </div>)
+
+  const funcHome = [];
+  funcHome.push(
+    <Functions funcName={funcName}/>
+  )
+  
+  const handleClick = (e) => {
+    setFuncName(e);
+  }
+
+  return (
+    <div id='main'>
+      <SideBar handleClick={handleClick}/>
+      {/* <div> */}
+      {funcName ? funcHome : home}
+        {/* {home} */}
+      {/* </div> */}
+    </div>
+
+  )
 }
 
   
