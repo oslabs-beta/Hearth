@@ -17,7 +17,7 @@ const Main = (props) => {
 
   const funcHome = [];
   funcHome.push(
-    <Functions funcName={funcName}/>
+    <Functions funcName={funcName} externalId={props.externalId} arn={props.arn} region={props.region}/>
   )
   
   const handleClick = (e) => {
@@ -26,7 +26,7 @@ const Main = (props) => {
 
   return (
     <div id='main'>
-      <SideBar handleClick={handleClick}/>
+      <SideBar handleClick={handleClick} externalId={props.externalId} arn={props.arn} region={props.region}/>
       {/* <div> */}
       {funcName ? funcHome : home}
         {/* {home} */}

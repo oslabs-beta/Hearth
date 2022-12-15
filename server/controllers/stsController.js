@@ -15,11 +15,10 @@ stsController.getCreds = async (req, res, next) => {
     
   const stsClient = new STSClient(creds)
 
-  // grab roleArn and external id from database after it's set up
   const params = {
-      RoleArn: process.env.ROLE_ARN,
+      RoleArn: req.query.arn,
       RoleSessionName:"Hearth_Session",
-      ExternalId: process.env.EXTERNAL_ID
+      ExternalId: req.query.externalId
   }
     // console.log(params)
   try {          
