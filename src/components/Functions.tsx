@@ -10,7 +10,7 @@ const Functions = (props) => {
   // const [invoked, setInvoked] = useState({})
   
   const warmFunc = () => {
-    axios.get('http://localhost:3000/aws/invokefuncs', { params: { funcName: props.funcName }})
+    axios.get('http://localhost:3000/aws/invokefuncs', { params: { funcName: props.funcName, externalId: props.externalId, arn: props.arn, region: props.region }})
       .then((data) => {
         console.log(data)
       })
@@ -18,15 +18,6 @@ const Functions = (props) => {
   }
 
   const handleWarmFunction = () => {
-    // const invokedClone = {...invoked}
-    // if (!invoked[props.funcName]) {
-    //   invokedClone[props.funcName] = false
-    //   setInvoked(invokedClone);
-    //   warmFunc();
-    // }
-
-    // invokedClone[props.funcName] = true
-    // setInvoked(invokedClone)
     warmFunc();
 
     const id = setInterval(warmFunc, 60000 * value);

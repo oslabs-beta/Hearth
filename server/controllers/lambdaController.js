@@ -1,10 +1,9 @@
-const { LambdaClient, GetFunctionUrlConfigCommand, AddLayerVersionPermissionCommand, ListFunctionsCommand } = require("@aws-sdk/client-lambda");
+const { LambdaClient, GetFunctionUrlConfigCommand, ListFunctionsCommand } = require("@aws-sdk/client-lambda");
 const fetch = require('node-fetch');
 const lambdaController = {};
 
 lambdaController.getFuncs = (req, res, next) => {
-  // console.log(res.locals.creds, 'getFuncs');
-  const client = new LambdaClient({ credentials: res.locals.creds, region: "us-west-1" });
+  const client = new LambdaClient({ credentials: res.locals.creds, region: req.query.region });
   
   const command2 = new ListFunctionsCommand({});
 
