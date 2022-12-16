@@ -1,16 +1,34 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import NextLink from 'next/link';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  Select,
+  TextField,
+  Typography, 
+  MenuItem,
+  List,
+  ListItem
+} from '@mui/material';
 
 const SignUp = (props) => {
   const navigate = useNavigate();
   const externalId = uuidv4();
-  let region = 'us-west-1';
+  const [region, setRegion] = useState('us-west-1');
 
   const handleRegionChange = (e) => {
     e.preventDefault();
-    region = e.target.value;
+    setRegion(e.target.value);
+    // console.log(region);
   }
 
   const handleAWSLink = (e) => {
@@ -36,6 +54,7 @@ const SignUp = (props) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       }
+      console.log(userData);
       const result = await fetch('http://localhost:3000/user/signup', reqBody);
       const data = await result.json();
       if(data === 'Signup Successful!') {
@@ -52,47 +71,55 @@ const SignUp = (props) => {
   }
 
   return (
-    <form className='signUpForm' >
-      <div className='box' >
-        <h1>Hearth</h1>
-        <div className='inputs' >
-          <input className='inputSignUp' type='text' id='username' placeholder='Username'></input>
-          <input className='inputSignUp' type='password' id='password' placeholder='Password'></input>
-          <label>Region:</label>
-          <select name="regions" onChange={handleRegionChange}>
-            <option>us-west-1</option>
-            <option>us-west-2</option>
-            <option>us-east-1</option>
-            <option>us-east-2</option>
-            <option>ap-south-1</option>
-            <option>ap-southeast-1</option>
-            <option>ap-southeast-2</option>
-            <option>ap-northeast-1</option>
-            <option>ap-northeast-2</option>
-            <option>ap-northeast-3</option>
-            <option>ca-central-1</option>
-            <option>eu-central-1</option>
-            <option>eu-west-1</option>
-            <option>eu-west-2</option>
-            <option>eu-west-3</option>
-            <option>eu-north-1</option>
-            <option>sa-east-1</option>
-          </select>
-          <button id='awsBtn' onClick={handleAWSLink}>Add AWS Stack with Hearth</button>
-          <input className='inputSignUp' type='text' id='arn' placeholder='ARN'></input>
-          <ul>
-            <li>Select your AWS region then click the “Add AWS Stack with Hearth” button</li>
-            <li>You will be redirected to your AWS IAM page. Log in; you will be prompted to create a Hearth-Stack</li>
-            <li>Navigate to the 'Outputs' tab; copy the Hearth-Stack ARN</li>
-            <li>Paste it in the ARN box</li>
-            <li>Click 'Sign Up'</li>
-          </ul>
-          <button onClick={handleSubmit} className='SignupBtn' type='submit'>Sign Up</button>
-          <br />
-          <span className="redirectButton">Already have an account? <Link id='link' to='/'>Log in here</Link></span>
-        </div>
-      </div>
-    </form>
+    <Box sx={{minHeight: '100%', display: 'flex', flexGrow: 1, alignItems: 'center'}}>
+      <Container maxWidth="sm">
+      <h1>Hearth</h1>
+        <form className='signUpForm' >
+          <Box sx={{ my: 3 }}>
+            <Typography color="textPrimary" variant="h4">
+              Create a new account
+            </Typography>
+          </Box>
+            <TextField className='inputSignUp' label='username' type='text' id='username' placeholder='Username' fullWidth margin="normal" variant="outlined"/>
+            <TextField className='inputSignUp' label='password' type='password' id='password' placeholder='Password' fullWidth margin='normal' variant="outlined"/>
+            <FormControl sx={{minWidth: 120, mt: 2}} fullWidth>
+              <InputLabel id="demo-simple-select-label">Region</InputLabel>
+              <Select label="Region" value={region} onChange={handleRegionChange}>
+                <MenuItem value={'us-west-1'}>us-west-1</MenuItem>
+                <MenuItem value={'us-west-2'}>us-west-2</MenuItem>
+                <MenuItem value={'us-east-1'}>us-east-1</MenuItem>
+                <MenuItem value={'us-east-2'}>us-east-2</MenuItem>
+                <MenuItem value={'ap-south-1'}>ap-south-1</MenuItem>
+                <MenuItem value={'ap-southeast-1'}>ap-southeast-1</MenuItem>
+                <MenuItem value={'ap-southeast-2'}>ap-southeast-2</MenuItem>
+                <MenuItem value={'ap-northeast-1'}>ap-northeast-1</MenuItem>
+                <MenuItem value={'ap-northeast-2'}>ap-northeast-2</MenuItem>
+                <MenuItem value={'ap-northeast-3'}>ap-northeast-3</MenuItem>
+                <MenuItem value={'ca-central-1'}>ca-central-1</MenuItem>
+                <MenuItem value={'eu-central-1'}>eu-central-1</MenuItem>
+                <MenuItem value={'eu-west-1'}>eu-west-1</MenuItem>
+                <MenuItem value={'eu-west-2'}>eu-west-2</MenuItem>
+                <MenuItem value={'eu-west-3'}>eu-west-3</MenuItem>
+                <MenuItem value={'eu-north-1'}>eu-north-1</MenuItem>
+                <MenuItem value={'sa-east-1'}>sa-east-1</MenuItem>
+              </Select>
+            </FormControl>
+            <Box sx={{ mt: 2 }}>
+            <Button color="primary" id='awsBtn' onClick={handleAWSLink} variant="outlined">Add AWS Stack with Hearth</Button>
+            <List>
+              <Typography variant='body2'>Select your AWS region then click the “Add AWS Stack with Hearth” button</Typography>
+              <Typography variant='body2'>You will be redirected to your AWS IAM page. Sign in and create a Hearth-Stack</Typography>
+              <Typography variant='body2'>Navigate to the "Outputs" tab and copy the Hearth-Stack ARN</Typography>
+              <Typography variant='body2'>Paste it in the ARN box</Typography>
+            </List>
+            </Box>
+            <TextField className='inputSignUp' type='text' id='arn' placeholder='ARN' label='ARN' fullWidth margin='normal' variant="outlined"/>
+            <Button color='primary' onClick={handleSubmit} className='SignupBtn' type='submit' variant='contained' fullWidth>Sign Up</Button>
+            <br />
+            <Typography className="redirectButton">Have an account? <Link id='link' to='/'>Sign in</Link></Typography>
+        </form>
+      </Container>
+    </Box>
   )
 }
 
