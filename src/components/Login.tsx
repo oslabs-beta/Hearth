@@ -62,7 +62,7 @@ const Login = (props) => {
             <Button onClick={handleSubmit} className="loginBtn" type="submit" variant='contained' fullWidth>Sign in</Button>
           </Box>
           <Box className='redirect'>
-            <Typography className="redirectButton">Don't have an account? <Link id='link' to='/signup'>Sign Up Here</Link></Typography>
+            <Typography variant="body2" className="redirectButton">Don't have an account? <Link id='link' to='/signup'>Sign Up</Link></Typography>
           </Box>
         </form>
       </Container>
