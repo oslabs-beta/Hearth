@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import Box from '@mui/material/Box';
+// import PropTypes from 'prop-types';
+import { Box, Button, Divider, Drawer, Typography, useMediaQuery, ListItem, ListItemButton, ListItemText } from '@mui/material';
 
 
+// PropTypes
 /*
 
 import PropTypes from 'prop-types';
@@ -22,6 +24,8 @@ import { Logo } from './logo';
 import { NavItem } from './nav-item';
 */
 
+const drawerWidth = 260;
+
  const SideBar = (props) => {
   const [funcs, setFuncs] = useState([]);
   const [showFuncs, setShowFuncs] = useState(false);
@@ -30,7 +34,17 @@ import { NavItem } from './nav-item';
   if (showFuncs) {
     funcs.forEach(el => {
       //insert time of when func was last invoked
-      render.push(<div onClick={() => props.handleClick(el.Name)}><p>{el.Name}</p></div>)
+      render.push(
+      // <div onClick={() => props.handleClick(el.Name)}><p>{el.Name}</p></div>
+      <Box onClick={() => props.handleClick(el.Name)}>
+        <Box>
+          <ListItemButton>
+            <ListItemText primary={el.Name} sx={{fontWeight:'bold'}} />
+          </ListItemButton>
+        </Box>
+        <Divider />
+      </Box>
+      )
     })
   }
 
@@ -48,11 +62,25 @@ import { NavItem } from './nav-item';
   }
 
   return (
-    <div>
-      <button onClick={show}>My Lambda Functions</button>
-      {render}
-    </div>
-
+    <Box sx={{flexGrow:1}}>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          p: 2,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            backgroundColor: 'transparent',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+      <Button color='primary' onClick={show} variant='contained'>My Lambda Functions</Button>
+      {render}  
+      </Drawer>
+    </Box>
   )
  }
  
