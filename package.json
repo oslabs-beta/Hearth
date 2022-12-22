@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-api-gateway": "^3.224.0",
-    "@aws-sdk/client-cloudwatch-logs": "^3.234.0",
+    "@aws-sdk/client-cloudwatch": "^3.231.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.231.0",
     "@aws-sdk/client-dynamodb": "^3.226.0",
     "@aws-sdk/client-lambda": "^3.224.0",
     "@aws-sdk/credential-provider-env": "^3.226.0",

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import NextLink from 'next/link';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
