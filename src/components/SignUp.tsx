@@ -32,7 +32,7 @@ const SignUp = (props) => {
 
   const handleAWSLink = (e) => {
     e.preventDefault();
-    window.open(`https://${region}.console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/create/review?templateURL=https://s3-us-west-1.amazonaws.com/cf-templates-29uosuh8qcp6-us-west-1/20223483f9-Hearth-Stack-212mrtryugdaf&stackName=Hearth-Stack&param_ExternalId=${externalId}`);
+    window.open(`https://${region}.console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/create/review?templateURL=https://s3-us-west-1.amazonaws.com/cf-templates-29uosuh8qcp6-us-west-1/20223576YS-HearthDelegationRolevck9rlukpm&stackName=Hearth-Stack&param_ExternalId=${externalId}`);
   }
 
   const handleSubmit = async (e) => {
