@@ -42,7 +42,7 @@ export const theme = createTheme({
     },
     MuiButtonBase: {
       defaultProps: {
-        disableRipple: true
+        disableRipple: false
       }
     },
     MuiCardContent: {
@@ -158,15 +158,15 @@ export const theme = createTheme({
     },
     divider: '#E6E8F0',
     primary: {
-      main: '#ffb74d',
-      light: '#673ab7',
-      dark: '#f57c00',
+      main: '#2196F3',
+      light: '#E3F2FD',
+      dark: '#1E88E5',
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#ffee58',
+      main: '#FFAB91',
       light: '#3FC79A',
-      dark: '#0B815A',
+      dark: '#D84315',
       contrastText: '#FFFFFF'
     },
     success: {
