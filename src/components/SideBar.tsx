@@ -19,11 +19,11 @@ const drawerWidth = 300;
     funcs.forEach(el => {
       //insert time of when func was last invoked
       render.push(
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
+        <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          {/* <ListItemButton sx={{ pl: 4 , width: '80%'}}> */}
             {/* <ListItemText primary={el.name} /> */}
-            <Functions Name={el.Name} /*handleClick={props.handleClick}*/ externalId={props.externalId} arn={props.arn} region={props.region} />
-          </ListItemButton>
+            <Functions Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
+          {/* </ListItemButton> */}
           <Divider />
         </List>
       )
@@ -51,19 +51,19 @@ const drawerWidth = 300;
   };
 
   return (
-    <Box sx={{flexGrow:1}}>
+    <Box>
       <Drawer
         sx={{
           width: drawerWidth,
           // flexShrink: 0,
           // p: 2,
-          mt: "0px",
+          mt: "100px",
           ml: "0px",
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             borderWidth: 0,
             boxSizing: 'border-box',
-            backgroundColor: 'white',
+            backgroundColor: 'transparent' 
           },
         }}
         variant="permanent"
@@ -72,7 +72,7 @@ const drawerWidth = 300;
       {/* <ThemeProvider theme={theme}>
         <Button color='primary' onClick={show} variant='contained' sx={{borderRadius: '0px'}}>My Lambda Functions</Button>
       </ThemeProvider> */}
-      <List>
+      <List sx={{mt: 9}}>
       <ListItemButton onClick={handleClick}>
               <ListItemText primary="My Lambda Functions" />
               {open ? <ExpandLess /> : <ExpandMore />}
