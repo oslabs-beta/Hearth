@@ -1,7 +1,7 @@
 {
   "name": "hearth",
   "version": "1.0.0",
-  "description": "",
+  "description": "An application to help minimize cold starts in AWS Lambda functions.",
   "main": "src/electron.ts",
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
