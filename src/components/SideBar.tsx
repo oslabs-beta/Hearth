@@ -11,18 +11,26 @@ const drawerWidth = 300;
 
  const SideBar = (props) => {
   const [funcs, setFuncs] = useState([]);
-  const [showFuncs, setShowFuncs] = useState(false);
+  // const [showFuncs, setShowFuncs] = useState(false);
+  const [current, setCurrent] = useState('');
+
+  const handleCurrent = (e) => {
+    setCurrent(e);
+  }
+
+  console.log(current);
 
   const render = [];
 
   // if (showFuncs) {
-    funcs.forEach(el => {
+    funcs.forEach((el, index) => {
+      console.log(index)
       //insert time of when func was last invoked
       render.push(
         <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           {/* <ListItemButton sx={{ pl: 4 , width: '80%'}}> */}
             {/* <ListItemText primary={el.name} /> */}
-            <Functions Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
+            <Functions index={index} current={current} handleCurrent={handleCurrent} Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
           {/* </ListItemButton> */}
           <Divider />
         </List>
@@ -39,12 +47,12 @@ const drawerWidth = 300;
     .catch((err) => console.log(`Error: ${err}`))
   }, [])
 
-  const show = () => {
-    setShowFuncs(!showFuncs);
-  }
+  // const show = () => {
+    // setShowFuncs(!showFuncs);
+  // }
 
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -72,10 +80,10 @@ const drawerWidth = 300;
       {/* <ThemeProvider theme={theme}>
         <Button color='primary' onClick={show} variant='contained' sx={{borderRadius: '0px'}}>My Lambda Functions</Button>
       </ThemeProvider> */}
-      <List sx={{mt: 9}}>
+      <List sx={{mt: 6}}>
       <ListItemButton onClick={handleClick}>
-              <ListItemText primary="My Lambda Functions" />
-              {open ? <ExpandLess /> : <ExpandMore />}
+              <Typography sx={{fontWeight: "bold"}}>My Lambda Functions</Typography>
+              {open ? <ExpandLess /> : <ExpandMore /> }
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
               {/* <List component="div" disablePadding> */}

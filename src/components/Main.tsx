@@ -11,10 +11,16 @@ import Box from '@mui/material/Box';
 import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+// import { ColorModeContext } from '../ColorModeContext';
+// import ToggleColorMode from '../ColorModeContext';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {CssBaseline} from '@mui/material';
 
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
-const Main = (props) => {
+export const Main = (props) => {
   const [logData, setData] = useState('');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const home = [];
   home.push(
@@ -35,53 +41,98 @@ const Main = (props) => {
     </div>
   )
   
-  
+  //pass down graph data  
   const handleDataChange = (data) => {
     setData(data);
   }
 
-  const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-  const themeMode = useTheme();
+  // const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+          primary: {
+            main: "#8ecae6" //light blue
+          },
+          secondary: {
+            main: "#FFB347" //orange
+            // main: "#219ebc" //teal
+          },
+          // button: "orange",
+        },
+      }),
+    [prefersDarkMode],
+  );
 
   return (
-    <div id='main' style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-      <div style={{display: 'flex', alignItems: 'center', height: '40px', justifyContent: 'center', marginRight: '12px'}}>
-        <img src='./../src/logo2.jpeg' width='40px' height='30px'/>
-        <h1>Hearth</h1>
-        {/* <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            bgcolor: 'background.default',
-            color: 'text.primary',
-            borderRadius: 1,
-            p: 3,
-          }}
-        >
-          {themeMode.palette.mode} mode
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-            {themeMode.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </Box> */}
-      </div>
-      
-      <div style={{display: 'flex', width: '99%', height: '100%'}}>
-      <div>
-        <SideBar handleDataChange={handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region}/>
-      </div>
-      <div style={{width: '80%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor:'#FBE9E7', borderRadius: '20px', borderBottomLeftRadius:'0', borderBottomRightRadius:'0'}}>
-        <div style={{height: '60%', marginBottom: '10px'}}>
-        {!logData ? home : funcHome}
+    <ThemeProvider theme={theme}>
+      <CssBaseline/>
+      <div id='main' style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+        <div style={{display: 'flex', alignItems: 'center', height: '40px', justifyContent: 'center', marginRight: '12px'}}>
+          <img src='./../src/logo2.png' width='40px' height='30px'/>
+          <h1>Hearth</h1>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgcolor: 'background.default',
+              color: 'text.primary',
+              borderRadius: 1,
+              p: 3,
+            }}
+          >
+            {theme.palette.mode} mode
+            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Box>
+        </div>
+        
+        <div style={{display: 'flex', width: '99%', height: '100%'}}>
+        <div>
+          <SideBar handleDataChange={handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region}/>
+        </div>
+        <div style={{width: '80%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor:'#FBE9E7', borderRadius: '20px', borderBottomLeftRadius:'0', borderBottomRightRadius:'0'}}>
+          <div style={{height: '60%', marginBottom: '10px'}}>
+          {!logData ? home : funcHome}
+          </div>
+        </div>
         </div>
       </div>
-      </div>
-    </div>
-
+    </ThemeProvider>
   )
 }
 
-  
-export default Main;
+// export default function ToggleColorMode() {
+//   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+//   const colorMode = React.useMemo(
+//     () => ({
+//       toggleColorMode: () => {
+//         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+//       },
+//     }),
+//     [],
+//   );
+
+//   const theme = React.useMemo(
+//     () =>
+//       createTheme({
+//         palette: {
+//           mode,
+//         },
+//       }),
+//     [mode],
+//   );
+
+//   return (
+//     <ColorModeContext.Provider value={colorMode}>
+//       <ThemeProvider theme={theme}>
+//         <Main />
+//       </ThemeProvider>
+//     </ColorModeContext.Provider>
+//   );
+// }

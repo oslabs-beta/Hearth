@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
+import Button from '@mui/material/Button';
 
 const Input = styled(MuiInput)`
   width: 42px;
@@ -80,7 +81,7 @@ const FunctionDetails = (props) => {
   return (
     <div>
       {/* <h2>{props.Name}</h2> */}
-      <Box sx={{ width: 280 }}>
+      <Box sx={{ width: 250 }}>
       {/* <Typography id="input-slider" gutterBottom>
         Set Lambda Function Warming Interval
       </Typography> */}
@@ -98,6 +99,7 @@ const FunctionDetails = (props) => {
           <Input
             value={value}
             size="small"
+            sx={{mr: '3px'}}
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
@@ -112,8 +114,10 @@ const FunctionDetails = (props) => {
       </Grid>
     </Box>
       {/* <p>{value}</p> */}
-      <button onClick={handleWarmFunction} disabled={disabledInvoke}>Warm Function</button>
-      <button onClick={handleStopWarming} disabled={disabled}>Stop Function Warming</button>
+      <div style={{display: 'flex', justifyContent:'space-between'}}> 
+        <Button onClick={handleWarmFunction} disabled={disabledInvoke} size='small' style={{backgroundColor: 'transparent', border: 'none', borderRight:'1px solid gray', cursor:'pointer', borderRadius:'0px'}}>Warm Function</Button>
+        <Button onClick={handleStopWarming} disabled={disabled} size='small' style={{padding:'0', backgroundColor: 'transparent', border: 'none', cursor:'pointer', borderRadius:'0px'}}>Stop Function Warming</Button>
+      </div>
     </div>
 
   )
