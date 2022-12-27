@@ -1,18 +1,12 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import SideBar from './SideBar';
-import FunctionDetails from './FunctionDetails';
 import Duration from './durationChart';
-import {Typography} from '@mui/material'
-import { display, height } from '@mui/system';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-// import { ColorModeContext } from '../ColorModeContext';
-// import ToggleColorMode from '../ColorModeContext';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {CssBaseline} from '@mui/material';
 
@@ -28,11 +22,6 @@ export const Main = (props) => {
       {/* <Typography sx={{fontSize: '70px', fontWeight: 'bold', ml: 3, fontColor: "#f26419"}} variant='h6'>Welcome</Typography> */}
       <img id='hearth' src='./../src/logo.png' height="270" width="450" />
     </div>)
-
-  // const funcHome = [];
-  // funcHome.push(
-  //   <FunctionDetails funcName={funcName} externalId={props.externalId} arn={props.arn} region={props.region}/>
-  // )
 
   const funcHome = [];
   funcHome.push(
@@ -58,9 +47,7 @@ export const Main = (props) => {
           },
           secondary: {
             main: "#FFB347" //orange
-            // main: "#219ebc" //teal
           },
-          // button: "orange",
         },
       }),
     [prefersDarkMode],
@@ -73,7 +60,7 @@ export const Main = (props) => {
         <div style={{display: 'flex', alignItems: 'center', height: '40px', justifyContent: 'center', marginRight: '12px'}}>
           <img src='./../src/logo2.png' width='40px' height='30px'/>
           <h1>Hearth</h1>
-          <Box
+          {/* <Box
             sx={{
               display: 'flex',
               width: '100%',
@@ -89,7 +76,7 @@ export const Main = (props) => {
             <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
               {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
-          </Box>
+          </Box> */}
         </div>
         
         <div style={{display: 'flex', width: '99%', height: '100%'}}>
@@ -106,33 +93,3 @@ export const Main = (props) => {
     </ThemeProvider>
   )
 }
-
-// export default function ToggleColorMode() {
-//   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-//   const colorMode = React.useMemo(
-//     () => ({
-//       toggleColorMode: () => {
-//         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-//       },
-//     }),
-//     [],
-//   );
-
-//   const theme = React.useMemo(
-//     () =>
-//       createTheme({
-//         palette: {
-//           mode,
-//         },
-//       }),
-//     [mode],
-//   );
-
-//   return (
-//     <ColorModeContext.Provider value={colorMode}>
-//       <ThemeProvider theme={theme}>
-//         <Main />
-//       </ThemeProvider>
-//     </ColorModeContext.Provider>
-//   );
-// }

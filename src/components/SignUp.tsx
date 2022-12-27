@@ -1,23 +1,8 @@
 import * as React from 'react';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
-  Select,
-  TextField,
-  Typography, 
-  MenuItem,
-  List,
-  ListItem
-} from '@mui/material';
+import { Box, Button, Container, FormControl, InputLabel, Select, TextField, Typography, MenuItem, List } from '@mui/material';
 
 const SignUp = (props) => {
   const navigate = useNavigate();
@@ -27,7 +12,6 @@ const SignUp = (props) => {
   const handleRegionChange = (e) => {
     e.preventDefault();
     setRegion(e.target.value);
-    // console.log(region);
   }
 
   const handleAWSLink = (e) => {
@@ -44,8 +28,6 @@ const SignUp = (props) => {
       region: region,
       externalId: externalId
     }
-    //add logic to see if everything is a valid username and password
-    // alphanumeric regex /^[a-z0-9]+$/i
     if (userData.username.match(/^[a-z0-9]+$/i) && userData.password.length > 5) {
 
       const reqBody = {
