@@ -13,31 +13,37 @@ ChartJS.register(
   Legend,
 );
 
-
-
 const Duration = (props) => {
   const options = { 
+    type: 'line',
     responsive: true,
     plugins: {
       legend: {
         position: 'top' as const,
-        onClick: (e, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const ci = legend.chart;
-          if (ci.isDatasetVisible(index)) {
-              ci.hide(index);
-              legendItem.hidden = true;
-          } else {
-              ci.show(index);
-              legendItem.hidden = false;
-          }
-      }
+        display: false,
       },
       title: {
         display: true,
         text: 'Duration',
+        font: {
+          size: 25
+        }
       },
     },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Invoke Times'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Milliseconds (ms)'
+        }
+      }
+    }
   };
   
   // dynamic depending on invocation times
@@ -52,11 +58,11 @@ const Duration = (props) => {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        // label: 'none',
         // get data from cloudwatch logs
         data: invocationDuration,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: '#90e0ef',
+        backgroundColor: '#caf0f8',
         // hidden: true
       },
     ],
@@ -64,7 +70,7 @@ const Duration = (props) => {
 
   return( 
   <div>
-    <Line options={options} data={data} />
+    <Line options={options} data={data} style={{width: '700px', height: '700px'}}/>
   </div>
   );
 }

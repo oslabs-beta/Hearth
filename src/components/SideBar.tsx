@@ -16,12 +16,12 @@ const drawerWidth = 300;
     setCurrent(e);
   }
 
-  console.log(current);
+  // console.log(current);
 
   const render = [];
 
   funcs.forEach((el, index) => {
-    console.log(index)
+    // console.log(index)
     //insert time of when func was last invoked
     render.push(
       <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -65,7 +65,7 @@ const drawerWidth = 300;
         variant="permanent"
         anchor="left"
       >
-        <List sx={{mt: 6}}>
+        <List sx={{mt: 5}}>
           <ListItemButton onClick={handleClick}>
             <Typography sx={{fontWeight: "bold"}}>My Lambda Functions</Typography>
             {open ? <ExpandLess /> : <ExpandMore /> }
