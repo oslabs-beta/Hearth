@@ -26,7 +26,7 @@ export const Main = (props) => {
   const funcHome = [];
   funcHome.push(
     <div>
-      <Duration logData={logData} />
+      <Duration logData={logData}/>
     </div>
   )
   
