@@ -34,7 +34,7 @@ const Duration = (props) => {
       x: {
         title: {
           display: true,
-          text: 'Invoke Times'
+          text: 'Invocations (most recent)'
         }
       },
       y: {
@@ -50,9 +50,18 @@ const Duration = (props) => {
   const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   
   const invocationDuration = [];
-  for(let i = 0; i < props.logData.length; i++) {
-    invocationDuration.push(props.logData[i].Duration);
+
+  if (props.logData.length > 10) {
+    for(let i = 10; i >= 0; i--) {
+      invocationDuration.push(props.logData[i].Duration);
+    }
+  } else {
+    for(let i = props.logData.length - 1; i >= 0; i--) {
+      invocationDuration.push(props.logData[i].Duration);
+    }
   }
+
+  console.log(props.logData)
   
   const data = {
     labels,
