@@ -4,7 +4,7 @@ import Login from './components/Login';
 import { useState, useEffect } from 'react';
 import SignUp from './components/SignUp';
 import Main from './components/Main';
-import {theme} from './theme/index.js';
+// import {theme} from './theme/index.js';
 
 import './styles.css';
 

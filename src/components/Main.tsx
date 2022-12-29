@@ -12,7 +12,7 @@ import {CssBaseline} from '@mui/material';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
-export const Main = (props) => {
+const Main = (props) => {
   const [logData, setData] = useState('');
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
@@ -25,7 +25,7 @@ export const Main = (props) => {
 
   const funcHome = [];
   funcHome.push(
-    <div>
+    <div style={{background: 'white', borderRadius: '10px', padding: '5px'}}>
       <Duration logData={logData}/>
     </div>
   )
@@ -93,3 +93,5 @@ export const Main = (props) => {
     </ThemeProvider>
   )
 }
+
+export default Main

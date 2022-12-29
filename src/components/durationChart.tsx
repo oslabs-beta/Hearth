@@ -50,7 +50,7 @@ const Duration = (props) => {
   const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   
   const invocationDuration = [];
-  for(let i = 0; i < 10; i++) {
+  for(let i = 0; i < props.logData.length; i++) {
     invocationDuration.push(props.logData[i].Duration);
   }
   
