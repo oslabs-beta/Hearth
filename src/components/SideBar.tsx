@@ -1,52 +1,36 @@
 import * as React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import PropTypes from 'prop-types';
-import { Box, Button, Divider, Drawer, Typography, useMediaQuery, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Box, Divider, Drawer, Typography, List, ListItemButton, Collapse } from '@mui/material';
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import Functions from './Functions';
 
-
-// PropTypes
-/*
-
-import PropTypes from 'prop-types';
-import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { ChartBar as ChartBarIcon } from '../icons/chart-bar';
-import { Cog as CogIcon } from '../icons/cog';
-import { Lock as LockIcon } from '../icons/lock';
-import { Selector as SelectorIcon } from '../icons/selector';
-import { ShoppingBag as ShoppingBagIcon } from '../icons/shopping-bag';
-import { User as UserIcon } from '../icons/user';
-import { UserAdd as UserAddIcon } from '../icons/user-add';
-import { Users as UsersIcon } from '../icons/users';
-import { XCircle as XCircleIcon } from '../icons/x-circle';
-import { Logo } from './logo';
-import { NavItem } from './nav-item';
-*/
-
-const drawerWidth = 260;
+const drawerWidth = 300;
 
  const SideBar = (props) => {
   const [funcs, setFuncs] = useState([]);
-  const [showFuncs, setShowFuncs] = useState(false);
+  const [current, setCurrent] = useState('');
+
+  const handleCurrent = (e) => {
+    setCurrent(e);
+  }
+
+  // console.log(current);
 
   const render = [];
-  if (showFuncs) {
-    funcs.forEach(el => {
-      //insert time of when func was last invoked
-      render.push(
-      // <div onClick={() => props.handleClick(el.Name)}><p>{el.Name}</p></div>
-      <Box onClick={() => props.handleClick(el.Name)}>
-        <Box>
-          <ListItemButton>
-            <ListItemText primary={el.Name} sx={{fontWeight:'bold'}} />
-          </ListItemButton>
-        </Box>
+
+  funcs.forEach((el, index) => {
+    // console.log(index)
+    //insert time of when func was last invoked
+    render.push(
+      <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <Functions index={index} current={current} handleCurrent={handleCurrent} Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
         <Divider />
-      </Box>
-      )
-    })
-  }
+      </List>
+    )
+  })
+
 
   useEffect(() => {
     axios.get('http://localhost:3000/aws/funcs', { params: { externalId: props.externalId, arn: props.arn, region: props.region }})
@@ -57,28 +41,39 @@ const drawerWidth = 260;
     .catch((err) => console.log(`Error: ${err}`))
   }, [])
 
-  const show = () => {
-    setShowFuncs(!showFuncs);
-  }
+  
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   return (
-    <Box sx={{flexGrow:1}}>
+    <Box>
       <Drawer
         sx={{
           width: drawerWidth,
-          flexShrink: 0,
-          p: 2,
+          mt: "100px",
+          ml: "0px",
           '& .MuiDrawer-paper': {
             width: drawerWidth,
+            borderWidth: 0,
             boxSizing: 'border-box',
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent' 
           },
         }}
         variant="permanent"
         anchor="left"
       >
-      <Button color='primary' onClick={show} variant='contained'>My Lambda Functions</Button>
-      {render}  
+        <List sx={{mt: 5}}>
+          <ListItemButton onClick={handleClick}>
+            <Typography sx={{fontWeight: "bold"}}>My Lambda Functions</Typography>
+            {open ? <ExpandLess /> : <ExpandMore /> }
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            {render}
+          </Collapse>
+        </List> 
       </Drawer>
     </Box>
   )

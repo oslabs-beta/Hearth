@@ -8,6 +8,7 @@ const PORT = 3000;
 // REQUIRE ROUTERS
 const userRouter = require(path.join(__dirname, './routes/userRouter.js'));
 const awsRouter = require(path.join(__dirname, './routes/awsRouter.js'));
+const cloudWatchRouter = require(path.join(__dirname, './routes/cloudWatchRouter.js'));
 
 // PARSE REQUESTS
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(express.json());
 // ROUTER ROUTES
 app.use('/user', userRouter);
 app.use('/aws', awsRouter);
+app.use('/cloud', cloudWatchRouter);
 
 // SERVE STATIC FILES
 app.use('/build', express.static(path.join(__dirname, '../dist')));

@@ -4,7 +4,9 @@ import Login from './components/Login';
 import { useState, useEffect } from 'react';
 import SignUp from './components/SignUp';
 import Main from './components/Main';
+import {theme} from './theme/index.js';
 
+import './styles.css';
 
 
 const App = () => {
@@ -34,8 +36,8 @@ const App = () => {
 
 
   return (
-    <div className='router'>
-      <main>
+    <div className='router' style={{height: '100%'}}>
+      <main style={{width:'100%', height:'100%'}}>
         <Routes>
           <Route path='/' element={<Login username={username} setUsername={setUsername} handleUserChange={handleUserChange} region={region} setRegion={setRegion} handleRegionChange={handleRegionChange} externalId={externalId} setExternalId={setExternalId} handleExternalIdChange={handleExternalIdChange} arn={arn} setArn={setArn} handleArnChange={handleArnChange}/>} />
           <Route path='/signup' element={<SignUp />} />

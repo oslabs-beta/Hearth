@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import {styled} from '@mui/material/styles'
 
 export const theme = createTheme({
   breakpoints: {
@@ -41,7 +42,7 @@ export const theme = createTheme({
     },
     MuiButtonBase: {
       defaultProps: {
-        disableRipple: true
+        disableRipple: false
       }
     },
     MuiCardContent: {
@@ -110,7 +111,7 @@ export const theme = createTheme({
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: '#F3F4F6',
+          backgroundColor: '#ffe0b2',
           '.MuiTableCell-root': {
             color: '#374151'
           },
@@ -157,15 +158,15 @@ export const theme = createTheme({
     },
     divider: '#E6E8F0',
     primary: {
-      main: '#5fa8d3',
-      light: '#cae9ff',
-      dark: '#2a6f97',
+      main: '#2196F3',
+      light: '#E3F2FD',
+      dark: '#1E88E5',
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#10B981',
+      main: '#FFAB91',
       light: '#3FC79A',
-      dark: '#0B815A',
+      dark: '#D84315',
       contrastText: '#FFFFFF'
     },
     success: {
@@ -193,7 +194,7 @@ export const theme = createTheme({
       contrastText: '#FFFFFF'
     },
     text: {
-      primary: '#121828',
+      primary: '#ffb3fa',
       secondary: '#65748B',
       disabled: 'rgba(55, 65, 81, 0.48)'
     }

@@ -1,131 +1,74 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { Box, Typography, ListItemButton } from '@mui/material';
+import FunctionDetails from './FunctionDetails';
 import axios from 'axios';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
-import MuiInput from '@mui/material/Input';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const Input = styled(MuiInput)`
-  width: 42px;
-`;
 const Functions = (props) => {
-  const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    30,
-  );;
-  const [ids, setIds] = useState({});
-  const [disabled, setDisabled] = useState({});
-  const [disabledInvoke, setDisabledInvoke] = useState({})
-  // const [invoked, setInvoked] = useState({})
+const [colorStay, setColor] = useState('white');
+const [lastInvoke, setLastInvoke] = useState('');
+const [lastInvokeDate, setLastInvokeDate] = useState('');
+const [data, setData] = useState('')
+const [warmed, setWarmed] = useState(false);
+const [stopInvoke, setStopInvoke] = useState(true);
+const [ids, setIds] = useState({});
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue);
-  };
+const handleClick = () => {
+  if (colorStay === 'white') setColor('#E3F2FD')
+  else setColor('white')
+  props.handleDataChange(data);
+}
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
-  };
+const handleWarmButtons = () => {
+  setWarmed(!warmed);
+  setStopInvoke(!stopInvoke);
+}
 
-  const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 60) {
-      setValue(60);
-    }
-  };
-  
-  const warmFunc = () => {
-    axios.get('http://localhost:3000/aws/invokefuncs', { params: { funcName: props.funcName, externalId: props.externalId, arn: props.arn, region: props.region }})
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((err) => console.log(`Error: ${err}`))
-  }
+const handleIds = (e) => {
+  setIds(e);
+}
 
-  const handleWarmFunction = () => {
-    warmFunc();
+const slider = [];
+if (props.current === props.index) {
+  slider.push(<FunctionDetails Name={props.Name} externalId={props.externalId} arn={props.arn} region={props.region} handleWarmButtons={handleWarmButtons} warmed={warmed} stopInvoke={stopInvoke} ids={ids} handleIds={handleIds}/>)
+}
 
-    if (typeof(value) === 'number'){
-      // don't forget to change from 10sec after demo
-      const id = setInterval(warmFunc, 5000 * value);
+useEffect(() => {
+  axios.get('http://localhost:3000/cloud/logs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
+    .then((data) => {
+      // console.log(data);
+      setLastInvoke(data.data[data.data.length - 1].Time);
+      setLastInvokeDate(data.data[data.data.length - 1].Date)
+      setData(data.data);
+    })
+    .catch((err) => console.log(`Error: ${err}`))
+}, [])
 
-      const idsClone: {name?: string, id?: ReturnType<typeof setTimeout>} = {...ids}
-      idsClone[props.funcName] = id
-      setIds(idsClone);
+let date = new Date(`${lastInvokeDate} ${lastInvoke} UTC`);
+date.toLocaleString();
 
-      const disabledClone: {name?: string, disabled?: boolean} = {...disabled};
-      disabledClone[props.funcName] = false
-      setDisabled(disabledClone);
-
-      const disabledInvokeClone = {...disabledInvoke};
-      disabledInvokeClone[props.funcName] = true;
-      setDisabledInvoke(disabledInvokeClone);
-    }
-  }
-  
-  const handleStopWarming = () => {
-    clearInterval(ids[props.funcName])
-    
-    const disabledClone: {name?: string, disabled?: boolean} = {...disabled};
-    disabledClone[props.funcName] = true
-    setDisabled(disabledClone);
-
-    const disabledInvokeClone = {...disabledInvoke};
-    disabledInvokeClone[props.funcName] = false;
-    setDisabledInvoke(disabledInvokeClone);
-  }
-
-  const onChange = (e) => {
-    e.preventDefault();
-    setValue(e.target.value)
-    
-    const disabledInvokeClone = {...disabledInvoke};
-    disabledInvokeClone[props.funcName] = false;
-    setDisabledInvoke(disabledInvokeClone);
-  }
-  
-  return (
-    <div>
-      <h2>{props.funcName}</h2>
-      <Box sx={{ width: 250 }}>
-      <Typography id="input-slider" gutterBottom>
-        Set Lambda Function Warming Interval
-      </Typography>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs>
-          <Slider
-            value={typeof value === 'number' ? value : 0}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-            max={60}
-            min={1}
-          />
-        </Grid>
-        <Grid item>
-          <Input
-            value={value}
-            size="small"
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            inputProps={{
-              step: 1,
-              min: 1,
-              max: 60,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Box>
-      {/* <p>{value}</p> */}
-      <button onClick={handleWarmFunction} disabled={disabledInvoke[props.funcName]}>Warm Function</button>
-      <button onClick={handleStopWarming} disabled={disabled[props.funcName]}>Stop Function Warming</button>
-    </div>
-
+const dates = [];
+if (lastInvokeDate) {
+  dates.push(
+    <Typography sx={{fontSize: '0.8em', width:'100%'}}>{`${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`}</Typography>)
+  dates.push(
+    <Typography sx={{fontSize: '0.8em', width:'100%'}}>{`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`}</Typography>
   )
+}
+
+return (
+  <Box sx={{ width:'80%', mb: '8px'}}>
+      <ListItemButton onClick={() => {handleClick(); props.handleCurrent(props.index)}} sx={{display:'flex', flexDirection: 'column', pl: 4 , borderRadius: 2, background: 'secondary' ,"&:hover":{background: 'primary'}, /*"&:focus":{background:'#E3F2FD'}*/"&:active":{background:"#90CAF9"}}}> 
+        <Typography sx={{fontWeight:'bold', width:'100%'}}>{props.Name}</Typography>
+        <Box sx={{display: 'flex', alignItems: 'center', color: 'gray', width:'100%'}}>
+          <AccessTimeIcon sx={{fontSize: 'small', mr: '2px'}}/>
+          {dates}
+        </Box>
+      </ListItemButton>
+    {slider}
+  </Box>
+)
 }
 
 export default Functions;
