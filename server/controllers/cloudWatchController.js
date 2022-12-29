@@ -19,7 +19,6 @@ cloudWatchController.getLogs = async (req, res, next) => {
   const streams = response.logStreams;
   for(let j = streams.length - 1; j >= streams.length - 6 && j >= 0; j--) {
     const currentStream = streams[j].logStreamName;
-    console.log('Current Stream', currentStream);
     const params = {
       logGroupName: currentGroup, /* required */
       logStreamName: currentStream, /* required */
@@ -27,7 +26,6 @@ cloudWatchController.getLogs = async (req, res, next) => {
     };
     try {
       const logs = await client.getLogEvents(params);
-      console.log('Logs', logs)
       const events = logs.events;
       //reverse the events to put it from newest to oldest
       for(let i = events.length - 1; i >= 0; i--) {
