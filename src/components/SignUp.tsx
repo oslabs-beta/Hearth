@@ -2,22 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
-  Select,
-  TextField,
-  Typography,
-  MenuItem,
-  List,
-  ListItem
-} from '@mui/material';
 import { Box, Button, Container, FormControl, InputLabel, Select, TextField, Typography, MenuItem, List } from '@mui/material';
 
 const SignUp = (props) => {
