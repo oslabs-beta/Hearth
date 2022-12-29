@@ -14,7 +14,7 @@ ChartJS.register(
 );
 
 const Duration = (props) => {
-  const options = { 
+  const options = {
     type: 'line',
     responsive: true,
     plugins: {
@@ -34,7 +34,12 @@ const Duration = (props) => {
       x: {
         title: {
           display: true,
-          text: 'Invocations (most recent)'
+          text: 'Invocations (most recent)',
+          ticks: {
+            autoskip: false,
+            maxRotation: 90,
+            minRotation: 90
+          }
         }
       },
       y: {
@@ -45,24 +50,46 @@ const Duration = (props) => {
       }
     }
   };
-  
+
   // dynamic depending on invocation times
-  const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  
+  const labels = [];
+
+  if (props.logData.length > 10) {
+    for (let i = 10; i >= 0; i--) {
+      const timestamp = `${props.logData[i].Date}\n${props.logData[i].Time}`;
+      labels.push(timestamp);
+    }
+  } else {
+    for (let i = props.logData.length - 1; i >= 0; i--) {
+      const timestamp = `${props.logData[i].Date}\n${props.logData[i].Time}`
+      labels.push(timestamp);
+    }
+  }
+
   const invocationDuration = [];
 
   if (props.logData.length > 10) {
     for(let i = 10; i >= 0; i--) {
-      invocationDuration.push(props.logData[i].Duration);
+      if (props.logData[i].initDuration) {
+        const totalDuration = props.logData[i].initDuration + props.logData[i].Duration;
+        invocationDuration.push(totalDuration);
+      } else {
+        invocationDuration.push(props.logData[i].Duration);
+      }
     }
   } else {
     for(let i = props.logData.length - 1; i >= 0; i--) {
-      invocationDuration.push(props.logData[i].Duration);
+      if (props.logData[i].initDuration) {
+        const totalDuration = props.logData[i].initDuration + props.logData[i].Duration;
+        invocationDuration.push(totalDuration);
+      } else {
+        invocationDuration.push(props.logData[i].Duration);
+      }
     }
   }
 
   console.log(props.logData)
-  
+
   const data = {
     labels,
     datasets: [
@@ -77,7 +104,7 @@ const Duration = (props) => {
     ],
   };
 
-  return( 
+  return(
   <div>
     <Line options={options} data={data} style={{width: '700px', height: '700px'}}/>
   </div>
@@ -85,4 +112,3 @@ const Duration = (props) => {
 }
 
 export default Duration;
-  

@@ -13,22 +13,22 @@ ChartJS.register(
   Legend,
 );
 
-const MaxMemUsed = (props) => {
+const BilledDuration = (props) => {
   const options = {
     type: 'line',
     responsive: true,
     plugins: {
       legend: {
         position: 'top' as const,
-        display: false
+        display: false,
       },
       title: {
         display: true,
-        text: 'Max Memory Used',
+        text: 'Billed Duration',
         font: {
           size: 25
         }
-      }
+      },
     },
     scales: {
       x: {
@@ -40,11 +40,13 @@ const MaxMemUsed = (props) => {
       y: {
         title: {
           display: true,
-          text: 'Megabytes (MB)'
+          text: 'Milliseconds (ms)'
         }
       }
     }
   };
+
+  // dynamic depending on invocation times
   const labels = [];
 
   if (props.logData.length > 10) {
@@ -59,15 +61,15 @@ const MaxMemUsed = (props) => {
     }
   }
 
-  const invocationMaxMemUsed = [];
+  const invocationBilledDuration = [];
 
   if (props.logData.length > 10) {
     for (let i = 10; i >= 0; i--) {
-      invocationMaxMemUsed.push(props.logData[i].MaxMemUsed);
+      invocationBilledDuration.push(props.logData[i].BilledDuration);
     }
   } else {
-    for (let i = props.logData.length - 1; i >= 0; i--) {
-      invocationMaxMemUsed.push(props.logData[i].MaxMemUsed);
+    for(let i = props.logData.length - 1; i >= 0; i--) {
+      invocationBilledDuration.push(props.logData[i].BilledDuration);
     }
   }
 
@@ -75,18 +77,21 @@ const MaxMemUsed = (props) => {
     labels,
     datasets: [
       {
-        data: invocationMaxMemUsed,
+        // label: 'none',
+        // get data from cloudwatch logs
+        data: invocationBilledDuration,
         borderColor: '#90e0ef',
-        backgroundColor: '#caf0f8'
-      }
-    ]
+        backgroundColor: '#caf0f8',
+        // hidden: true
+      },
+    ],
   };
 
-  return (
-    <div>
-      <Line options={options} data={data} style={{width: '700px', height: '700px'}} />
-    </div>
+  return(
+  <div>
+    <Line options={options} data={data} style={{width: '700px', height: '700px'}}/>
+  </div>
   );
 }
 
-export default MaxMemUsed;
+export default BilledDuration;
