@@ -9,6 +9,8 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {CssBaseline} from '@mui/material';
+import BilledDuration from './billedDurationChart';
+import MaxMemUsed from './maxMemUsedChart';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -27,10 +29,12 @@ const Main = (props) => {
   funcHome.push(
     <div style={{background: 'white', borderRadius: '10px', padding: '5px'}}>
       <Duration logData={logData}/>
+      <BilledDuration logData={logData} />
+      <MaxMemUsed logData={logData} />
     </div>
   )
-  
-  //pass down graph data  
+
+  //pass down graph data
   const handleDataChange = (data) => {
     setData(data);
   }
@@ -78,7 +82,7 @@ const Main = (props) => {
             </IconButton>
           </Box> */}
         </div>
-        
+
         <div style={{display: 'flex', width: '99%', height: '100%'}}>
         <div>
           <SideBar handleDataChange={handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region}/>
