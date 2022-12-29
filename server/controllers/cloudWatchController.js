@@ -1,5 +1,6 @@
 const { CloudWatchClient, GetMetricStatisticsCommand, CloudWatch } = require("@aws-sdk/client-cloudwatch");
 const { CloudWatchLogs } = require("@aws-sdk/client-cloudwatch-logs");
+const { ControlPointSharp } = require("@mui/icons-material");
 const { raw } = require("express");
 const fetch = require('node-fetch');
 const { format } = require("path");
@@ -11,24 +12,29 @@ cloudWatchController.getLogs = async (req, res, next) => {
   const currentGroup = '/aws/lambda/'+ req.query.funcName;
   const allLogs = [];
   const searchParams = {
-    logGroupName: currentGroup, /* required */
-    limit: 5
+    logGroupName: currentGroup /* required */
   };
   try {
   const response = await client.describeLogStreams(searchParams);
   const streams = response.logStreams;
-  for(let j = 0; j < streams.length; j++) {
+  for(let j = streams.length - 1; j >= streams.length - 6 && j >= 0; j--) {
     const currentStream = streams[j].logStreamName;
+    console.log('Current Stream', currentStream);
     const params = {
       logGroupName: currentGroup, /* required */
-      logStreamName: currentStream /* required */
+      logStreamName: currentStream, /* required */
+      startFromHead: true
     };
     try {
       const logs = await client.getLogEvents(params);
+      console.log('Logs', logs)
       const events = logs.events;
-      events.forEach(event =>{
-        allLogs.push(event.message);
-      });
+      //reverse the events to put it from newest to oldest
+      for(let i = events.length - 1; i >= 0; i--) {
+        if(events[i].message.split(' ')[0] === 'REPORT') {
+          allLogs.push(events[i]);
+        }
+      }
     } catch(err) {
       return next({
         log: `Error caught in cloudWatchController.getLogs: ${err}`,
@@ -42,49 +48,46 @@ cloudWatchController.getLogs = async (req, res, next) => {
       message: {err: 'An error occured while attempting to get logs'}
     })
   }
-
   res.locals.logs = allLogs;
   return next();
 };
 
 cloudWatchController.formatLogs = (req, res, next) => {
-  try{
+  try {
+    /*
+  const dateObject = new Date(timestamp); //declare new data object
+  const humanDataFormat = dateObject.toLocaleString('en-US', { timeZone: 'UTC' }); //convert to human-readable string
+  return humanDataFormat
+    */
   const formattedLogs = [];
   let rawLogs = res.locals.logs;
-  let currentFormattedLog;
   for(let i = 0; i < rawLogs.length; i++) {
-    if(/^\d$/.test(rawLogs[i][0])) {
-      let splitLog = rawLogs[i].split(' ');
-      currentFormattedLog = {};      
-      //const before_ = str.substring(0, str.indexOf('_'));
-      //take up to the T as the date
-      let date = splitLog[0].substring(0, splitLog[0].indexOf('T'));
-      //take after the T as the time
-      let time = splitLog[0].substring(splitLog[0].indexOf('T') + 1, splitLog[0].indexOf('.'));
-      //current log equals currentFormattedLog
-      currentFormattedLog.Time = date + " " + time;
-    } else if(rawLogs[i][0] === 'R') {
-      //current log set everything
-      //duration, billed duration, init duration
-      //[REPORT RequestId: 46f43b92-21ac-40c7-a52d-885561fc0e2b, Duration: 10.42 ms, Billed Duration: 11 ms, Memory Size: 128 MB, Max Memory Used: 65 MB, Init Duration: 221.49 ms, \n],
-      let splitReport = rawLogs[i].split('\t');
-      splitReport.forEach(str => {
-        if(str[0] === 'D') {
-          let splitDuration = str.split(' ');
-          currentFormattedLog.Duration = splitDuration[1];
-        } else if(str[0] === 'B') {
-          let splitBilled = str.split(' ');
-          currentFormattedLog.BilledDuration = splitBilled[2];
-        } else if(str[0] === 'I') {
-          let splitInit = str.split(' ');
-          currentFormattedLog.InitDuration = splitInit[2];
-        } else if (str.split(' ')[0] === 'Max') {
-          let splitMemUsed = str.split(' ')
-          currentFormattedLog.MaxMemUsed = splitMemUsed[3];
-        }
-      });
-      formattedLogs.push(currentFormattedLog);
-    }
+    const currentFormattedLog = {};
+    const dateObject = new Date(rawLogs[i].timestamp); //declare new data object
+    const formattedDate = dateObject.toLocaleString('en-US', { timeZone: 'UTC' }); //convert to human-readable string
+    const splitDate = formattedDate.split(', ');
+    currentFormattedLog.Time = splitDate[1];
+    currentFormattedLog.Date = splitDate[0];
+    //current log set everything
+    //duration, billed duration, init duration
+    //[REPORT RequestId: 46f43b92-21ac-40c7-a52d-885561fc0e2b, Duration: 10.42 ms, Billed Duration: 11 ms, Memory Size: 128 MB, Max Memory Used: 65 MB, Init Duration: 221.49 ms, \n],
+    let splitReport = rawLogs[i].message.split('\t');
+    splitReport.forEach(str => {
+      if(str[0] === 'D') {
+        let splitDuration = str.split(' ');
+        currentFormattedLog.Duration = splitDuration[1];
+      } else if(str[0] === 'B') {
+        let splitBilled = str.split(' ');
+        currentFormattedLog.BilledDuration = splitBilled[2];
+      } else if(str[0] === 'I') {
+        let splitInit = str.split(' ');
+        currentFormattedLog.InitDuration = splitInit[2];
+      } else if (str.split(' ')[0] === 'Max') {
+        let splitMemUsed = str.split(' ')
+        currentFormattedLog.MaxMemUsed = splitMemUsed[3];
+      }
+    });
+    formattedLogs.push(currentFormattedLog);
   }
   res.locals.formattedLogs = formattedLogs;
   return next();
