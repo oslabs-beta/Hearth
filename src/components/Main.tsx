@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import SideBar from './SideBar';
 import Duration from './durationChart';
+import LogTable from './LogTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -31,6 +32,7 @@ const Main = (props) => {
       <Duration logData={logData}/>
       <BilledDuration logData={logData} />
       <MaxMemUsed logData={logData} />
+      <LogTable logData={logData}/>
     </div>
   )
 
