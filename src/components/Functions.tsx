@@ -38,8 +38,8 @@ useEffect(() => {
   axios.get('http://localhost:3000/cloud/logs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {
       // console.log(data);
-      setLastInvoke(data.data[data.data.length - 1].Time);
-      setLastInvokeDate(data.data[data.data.length - 1].Date)
+      setLastInvoke(data.data[0].Time);
+      setLastInvokeDate(data.data[0].Date)
       setData(data.data);
     })
     .catch((err) => console.log(`Error: ${err}`))
