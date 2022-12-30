@@ -70,7 +70,7 @@ const Duration = (props) => {
 
   if (props.logData.length > 10) {
     for(let i = 10; i >= 0; i--) {
-      if (props.logData[i].initDuration) {
+      if (props.logData[i].InitDuration) {
         const totalDuration = Number(props.logData[i].InitDuration) + Number(props.logData[i].Duration);
         invocationDuration.push(totalDuration);
       } else {
@@ -79,7 +79,7 @@ const Duration = (props) => {
     }
   } else {
     for(let i = props.logData.length - 1; i >= 0; i--) {
-      if (props.logData[i].initDuration) {
+      if (props.logData[i].InitDuration) {
         const totalDuration = Number(props.logData[i].InitDuration) + Number(props.logData[i].Duration);
         invocationDuration.push(totalDuration);
       } else {
