@@ -19,7 +19,7 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'date', label: 'Date', minWidth: 170 },
+  { id: 'date', label: 'Date (UTC)', minWidth: 170 },
   { id: 'duration', label: 'Duration\u00a0(ms)', minWidth: 100 },
   {
     id: 'billedDuration',
@@ -76,6 +76,8 @@ export default function LogTable(props) {
     setPage(0);
   };
 
+  console.log(props.functionClick);
+
   React.useEffect(() => {
     const allRows = [];
     for(let i = 0; i < props.logData.length; i++) {
@@ -86,7 +88,7 @@ export default function LogTable(props) {
       allRows.push(createData(props.logData[i].Date + " " + props.logData[i].Time, props.logData[i].Duration, props.logData[i].BilledDuration, props.logData[i].MaxMemUsed, initDuration));
     }
     setRows(allRows);
-  });
+  }, [props.functionClick]);
 
   React.useEffect(() => {
     setPage(0)

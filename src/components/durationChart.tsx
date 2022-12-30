@@ -34,7 +34,7 @@ const Duration = (props) => {
       x: {
         title: {
           display: true,
-          text: 'Invocations (most recent)',
+          text: 'Time (UTC)',
           ticks: {
             autoskip: false,
             maxRotation: 90,

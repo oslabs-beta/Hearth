@@ -16,7 +16,7 @@ const drawerWidth = 300;
     setCurrent(e);
   }
 
-  // console.log(current);
+  console.log(current);
 
   const render = [];
 
@@ -25,7 +25,7 @@ const drawerWidth = 300;
     //insert time of when func was last invoked
     render.push(
       <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <Functions index={index} current={current} handleCurrent={handleCurrent} Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
+        <Functions handleFunctionClick={props.handleFunctionClick} index={index} current={current} handleCurrent={handleCurrent} Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
         <Divider />
       </List>
     )

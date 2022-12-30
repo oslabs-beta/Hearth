@@ -34,7 +34,7 @@ const BilledDuration = (props) => {
       x: {
         title: {
           display: true,
-          text: 'Invocations (most recent)'
+          text: 'Time (UTC)'
         }
       },
       y: {
