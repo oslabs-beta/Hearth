@@ -13,7 +13,7 @@ const Input = styled(MuiInput)`
 `;
 const FunctionDetails = (props) => {
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    30,
+    5,
   );;
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
@@ -44,7 +44,7 @@ const FunctionDetails = (props) => {
     warmFunc();
 
     if (typeof(value) === 'number'){
-      const timeout = 5000 * value
+      const timeout = 60000 * value
       const id = setInterval(warmFunc, timeout);
 
       const idsClone: {name?: string, id?: ReturnType<typeof setTimeout>} = {...props.ids}
