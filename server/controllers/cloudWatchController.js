@@ -111,7 +111,7 @@ cloudWatchController.getMetrics = async (req, res, next) => {
     "EndTime": new Date(),
     "MetricName": "Invocations",
     "Namespace": "AWS/Lambda",
-    "Period": 3600, //req.body.period (60, 300, 3600) ?
+    "Period": 3600, //req.body.period (60, 300, 3600) 
     "Statistics": ["Sum", "Maximum", "Minimum", "Average"], //req.body.statistics (should be an array)
     "Dimensions": [
       {
@@ -133,41 +133,5 @@ cloudWatchController.getMetrics = async (req, res, next) => {
     })
   }
 };
-
-/*
-cloudWatchController.getLogGroups = async (req, res, next) => {
-  const client = new CloudWatch({ region: process.env.AWS_DEFAULT_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    } });
-
-    const params = {
-      Dimensions: [
-        {
-          Name: 'LogGroupName', //required
-        },
-      ],
-      MetricName: 'IncomingLogEvents',
-      Namespace: 'AWS/Logs'
-    };
-    try {
-      const response = await client.listMetrics(params);
-      let groupNames = [];
-      const metrics = response.Metrics;
-      metrics.forEach(metric => {
-        current = metric.Dimensions;
-        groupNames.push(current[0].Value);
-      });
-      res.locals.groups = groupNames;
-      return next();
-    } catch(err) {
-      return next({
-        log: `Error caught in cloudWatchController.getLogGroups: ${err}`,
-        message: {err: 'An error occured while attempting to get log groups'}
-      })
-    }
-};
-*/
 
 module.exports = cloudWatchController;

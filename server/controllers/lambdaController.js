@@ -36,16 +36,9 @@ lambdaController.invokeFuncs = (req, res, next) => {
       const command = new GetFunctionUrlConfigCommand(input);
       client.send(command)
         .then((data) => {
-          // process data.
           //grab functionURL to obtain function name and ARN
-          console.log(data.FunctionUrl)
+          // console.log(data.FunctionUrl)
           fetch(data.FunctionUrl)
-          // .then(data => data.json())
-          // .then(data => console.log(data));
-
-
-          // const response = fetch(data.FunctionUrl);
-          // console.log(response.json());
           return next();
         })
         .catch((error) => {

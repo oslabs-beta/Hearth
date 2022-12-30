@@ -63,7 +63,7 @@ if (lastInvokeDate) {
 
 return (
   <Box sx={{ width:'80%', mb: '8px'}}>
-      <ListItemButton onClick={() => {handleClick(); props.handleCurrent(props.index); props.handleFunctionClick(props.Name)}} sx={{display:'flex', flexDirection: 'column', pl: 4 , borderRadius: 2, background: 'secondary' ,"&:hover":{background: 'primary'}, /*"&:focus":{background:'#E3F2FD'}*/"&:active":{background:"#90CAF9"}, alignItems:'flex-start'}}> 
+      <ListItemButton onClick={() => {handleClick(); props.handleCurrent(props.index); props.handleFunctionClick(props.Name)}} sx={{display:'flex', flexDirection: 'column', pl: 4 , borderRadius: 2, background: 'secondary' ,"&:hover":{background: 'primary'}, "&:active":{background:"#90CAF9"}, alignItems:'flex-start'}}> 
         <Box sx={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
           <Typography sx={{fontWeight:'bold', width:'100%', textAlign: 'left'}}>{props.Name}</Typography> 
           {fire}
