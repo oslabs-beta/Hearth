@@ -3,20 +3,9 @@ import { useState } from 'react';
 import SideBar from './SideBar';
 import Duration from './durationChart';
 import LogTable from './LogTable';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import {CssBaseline} from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Tabs, Tab, Typography, useMediaQuery, Box } from '@mui/material';
 import BilledDuration from './billedDurationChart';
 import MaxMemUsed from './maxMemUsedChart';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -104,8 +93,6 @@ const Main = (props) => {
     setData(data);
   }
 
-  // const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
   const theme = React.useMemo(
     () =>
       createTheme({
