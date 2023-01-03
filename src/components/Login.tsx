@@ -20,7 +20,7 @@ interface Props {
 const Login = (props: Props) => {
 
   const navigate = useNavigate();
-
+  // post username and password and chcek if they are valid, in which case redirect to the home page
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
@@ -36,7 +36,7 @@ const Login = (props: Props) => {
 
     const result = await fetch('http://localhost:3000/user/login', reqBody);
     const data = await result.json();
-    
+    //if there is an arn in the returned data, that means the login was successful
     if(data.arn) {
       props.handleRegionChange(data.region);
       props.handleArnChange(data.arn);

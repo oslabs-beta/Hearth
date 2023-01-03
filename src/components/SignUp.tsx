@@ -6,6 +6,7 @@ import { Box, Button, Container, FormControl, InputLabel, Select, TextField, Typ
 
 const SignUp = (props) => {
   const navigate = useNavigate();
+  //randomly generate an external id through uuidv
   const externalId = uuidv4();
   const [region, setRegion] = useState('us-west-1');
 
@@ -14,11 +15,13 @@ const SignUp = (props) => {
     setRegion(e.target.value);
   }
 
+  //dynamically create the link to the AWS console with the current external ID and region
   const handleAWSLink = (e) => {
     e.preventDefault();
     window.open(`https://${region}.console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/create/review?templateURL=https://s3-us-west-1.amazonaws.com/cf-templates-29uosuh8qcp6-us-west-1/20223576YS-HearthDelegationRolevck9rlukpm&stackName=Hearth-Stack&param_ExternalId=${externalId}`);
   }
 
+  //post the new user's information, given that it fits within the rules, to the database
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
@@ -28,6 +31,7 @@ const SignUp = (props) => {
       region: region,
       externalId: externalId
     }
+    //password must be longer than 5 characters and the  username must be alphanumberic
     if (userData.username.match(/^[a-z0-9]+$/i) && userData.password.length > 5) {
 
       const reqBody = {
@@ -90,7 +94,7 @@ const SignUp = (props) => {
             <List>
               <Typography variant='body2'>Select your AWS region then click the “Add AWS Stack with Hearth” button</Typography>
               <Typography variant='body2'>You will be redirected to your AWS IAM page. Sign in and create a Hearth-Stack</Typography>
-              <Typography variant='body2'>You will be redirected to your AWS IAM page. Sign in and create a Hearth-Stack</Typography>
+              <Typography variant='body2'>Be sure to accept the acknowledgement at the bottom of the page</Typography>
               <Typography variant='body2'>Navigate to the "Outputs" tab and copy the HearthDelegationRoleArn ARN</Typography>
               <Typography variant='body2'>Paste it in the ARN box</Typography>
             </List>

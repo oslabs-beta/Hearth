@@ -6,7 +6,6 @@ import LogTable from './LogTable';
 import { ThemeProvider, createTheme, CssBaseline, Tabs, Tab, Typography, useMediaQuery, Box, backdropClasses } from '@mui/material';
 import BilledDuration from './billedDurationChart';
 import MaxMemUsed from './maxMemUsedChart';
-import { grey } from '@mui/material/colors';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -14,6 +13,7 @@ interface TabPanelProps {
   value: number;
 }
 
+//chart's tabs
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -50,15 +50,18 @@ interface MainProps {
 }
 
 const Main = (props: MainProps) => {
+  // create state for the logs
   const [logData, setData] = useState('');
   // updates log when function is clicked in sidebar
   const [functionClick, setFunctionClick] = useState('');
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
+  // changes functionClick to be the current function that's clicked on
   const handleFunctionClick = (name) => {
     setFunctionClick(name);
   }
 
+  // home page when there's no data for functions / when no functions are clicked on
   const home = [];
   home.push(
       <div id='home' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', height: '60%', marginBottom: '10px'}}>
@@ -66,12 +69,14 @@ const Main = (props: MainProps) => {
       </div>
   )
 
+  // state for the tab panels
   const [value, setValue] = React.useState(0);
-
+  
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  // shows graphs and logs in the home page when functions that have data are clicked on
   const funcHome = [];
   funcHome.push(
     <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '100%'}}>
@@ -102,6 +107,7 @@ const Main = (props: MainProps) => {
     setData(data);
   }
 
+  // dark mode theme
   const theme = React.useMemo(
     () =>
       createTheme({
