@@ -6,11 +6,22 @@ import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import Functions from './Functions';
 
-const drawerWidth = 300;
+const drawerWidth: number = 300;
 
- const SideBar = (props) => {
-  const [funcs, setFuncs] = useState([]);
-  const [current, setCurrent] = useState('');
+{/* <SideBar handleFunctionClick={handleFunctionClick} handleDataChange={handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region}/> */}
+
+
+interface Props {
+  handleFunctionClick: (event: string) => void;
+  handleDataChange: (data: object) => void;
+  externalId: string;
+  arn: string;
+  region: string;
+}
+
+ const SideBar = (props: Props) => {
+  const [funcs, setFuncs] = useState<Array<any>>([]);
+  const [current, setCurrent] = useState<string | number>('');
 
   const handleCurrent = (e) => {
     setCurrent(e);
@@ -18,7 +29,7 @@ const drawerWidth = 300;
 
   console.log(current);
 
-  const render = [];
+  const render: React.ReactElement[] = [];
 
   funcs.forEach((el, index) => {
     // console.log(index)
@@ -41,8 +52,8 @@ const drawerWidth = 300;
     .catch((err) => console.log(`Error: ${err}`))
   }, [])
 
-  
-  const [open, setOpen] = React.useState(false);
+
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -59,7 +70,7 @@ const drawerWidth = 300;
             width: drawerWidth,
             borderWidth: 0,
             boxSizing: 'border-box',
-            backgroundColor: 'transparent' 
+            backgroundColor: 'transparent'
           },
         }}
         variant="permanent"
@@ -73,10 +84,10 @@ const drawerWidth = 300;
           <Collapse in={open} timeout="auto" unmountOnExit>
             {render}
           </Collapse>
-        </List> 
+        </List>
       </Drawer>
     </Box>
   )
  }
- 
+
  export default SideBar;
