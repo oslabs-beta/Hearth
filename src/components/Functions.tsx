@@ -5,7 +5,19 @@ import FunctionDetails from './FunctionDetails';
 import axios from 'axios';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const Functions = (props) => {
+interface Props {
+  handleFunctionClick: (name: string) => void;
+  index: number;
+  current: string | number;
+  handleCurrent: (current: number) => void;
+  Name: string;
+  handleDataChange: (data: Object) => void;
+  externalId: string;
+  arn: string;
+  region: string;
+}
+
+const Functions = (props: Props) => {
 const [colorStay, setColor] = useState('white');
 const [lastInvokeTime, setLastInvokeTime] = useState('');
 const [lastInvokeDate, setLastInvokeDate] = useState('');

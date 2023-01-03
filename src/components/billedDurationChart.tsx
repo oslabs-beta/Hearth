@@ -12,7 +12,11 @@ ChartJS.register(
   Legend,
 );
 
-const BilledDuration = (props) => {
+interface Props {
+  logData: Array<any> | string;
+}
+
+const BilledDuration = (props: Props) => {
   const options = {
     type: 'line',
     responsive: true,

@@ -12,7 +12,11 @@ ChartJS.register(
   Legend,
 );
 
-const Duration = (props) => {
+interface Props {
+  logData: Array<any> | string;
+}
+
+const Duration = (props: Props) => {
   const options = {
     type: 'line',
     responsive: true,

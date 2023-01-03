@@ -12,7 +12,11 @@ ChartJS.register(
   Legend,
 );
 
-const MaxMemUsed = (props) => {
+interface Props {
+  logData: Array<any> | string;
+}
+
+const MaxMemUsed = (props: Props) => {
   const options = {
     type: 'line',
     responsive: true,

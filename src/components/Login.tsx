@@ -2,7 +2,22 @@ import * as React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
-const Login = (props) => {
+interface Props {
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  handleUserChange : React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  region: string;
+  setRegion: React.Dispatch<React.SetStateAction<string>>;
+  handleRegionChange: (event: Event) => void;
+  externalId: string;
+  setExternalId : React.Dispatch<React.SetStateAction<string>>;
+  handleExternalIdChange: (event: Event) => void;
+  arn : string;
+  setArn: React.Dispatch<React.SetStateAction<string>>;
+  handleArnChange: (event: Event) => void;
+}
+
+const Login = (props: Props) => {
 
   const navigate = useNavigate();
 

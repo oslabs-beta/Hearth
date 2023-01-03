@@ -41,7 +41,15 @@ function a11yProps(index: number) {
   };
 }
 
-const Main = (props) => {
+
+interface MainProps {
+  username: string;
+  arn: string;
+  region: string;
+  externalId: string;
+}
+
+const Main = (props: MainProps) => {
   const [logData, setData] = useState('');
   // updates log when function is clicked in sidebar
   const [functionClick, setFunctionClick] = useState('');
