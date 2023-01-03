@@ -90,7 +90,7 @@ const SignUp = (props) => {
             <List>
               <Typography variant='body2'>Select your AWS region then click the “Add AWS Stack with Hearth” button</Typography>
               <Typography variant='body2'>You will be redirected to your AWS IAM page. Sign in and create a Hearth-Stack</Typography>
-              <Typography variant='body2'>You will be redirected to your AWS IAM page. Sign in and create a Hearth-Stack</Typography>
+              <Typography variant='body2'>Be sure to accept the acknowledgement at the bottom of the page.</Typography>
               <Typography variant='body2'>Navigate to the "Outputs" tab and copy the HearthDelegationRoleArn ARN</Typography>
               <Typography variant='body2'>Paste it in the ARN box</Typography>
             </List>
