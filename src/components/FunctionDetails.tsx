@@ -10,7 +10,21 @@ import Button from '@mui/material/Button';
 const Input = styled(MuiInput)`
   width: 42px;
 `;
-const FunctionDetails = (props) => {
+
+interface Props {
+  Name: string;
+  externalId: string;
+  arn: string;
+  region: string;
+  handleWarmButtons: () => void;
+  warmed: boolean;
+  stopInvoke: boolean;
+  ids: object;
+  handleIds: (e: object) => void;
+}
+
+
+const FunctionDetails = (props: Props) => {
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
     5,
   );;
