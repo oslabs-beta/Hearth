@@ -3,9 +3,10 @@ import { useState } from 'react';
 import SideBar from './SideBar';
 import Duration from './durationChart';
 import LogTable from './LogTable';
-import { ThemeProvider, createTheme, CssBaseline, Tabs, Tab, Typography, useMediaQuery, Box } from '@mui/material';
+import { ThemeProvider, createTheme, CssBaseline, Tabs, Tab, Typography, useMediaQuery, Box, backdropClasses } from '@mui/material';
 import BilledDuration from './billedDurationChart';
 import MaxMemUsed from './maxMemUsedChart';
+import { grey } from '@mui/material/colors';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -66,7 +67,7 @@ const Main = (props) => {
   const funcHome = [];
   funcHome.push(
     <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '100%'}}>
-      <div style={{background: 'white', borderRadius: '10px', padding: '5px'}}>
+      <div style={{ background: 'white', borderRadius: '10px', padding: '5px'}}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Duration" {...a11yProps(0)} />
@@ -98,12 +99,27 @@ const Main = (props) => {
       createTheme({
         palette: {
           mode: prefersDarkMode ? 'dark' : 'light',
+          ...(prefersDarkMode === true) ? {
           primary: {
             main: "#8ecae6" //light blue
           },
           secondary: {
             main: "#FFB347" //orange
           },
+          text: {
+            // primary: '#FFB347',
+            secondary: '#FFB347'
+          },
+          }
+          :
+          {
+            primary: {
+              main: "#8ecae6" //light blue
+            },
+            secondary: {
+              main: "#FFB347" //orange
+            },
+          }
         },
       }),
     [prefersDarkMode],
