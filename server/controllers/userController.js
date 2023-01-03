@@ -3,7 +3,9 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+
 //DATABASE
+
 // Create an Amazon DynamoDB service client object.
 const ddbClient = new DynamoDBClient({
   region: process.env.AWS_DEFAULT_REGION,

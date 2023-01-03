@@ -18,29 +18,37 @@ interface Props {
 }
 
 const Functions = (props: Props) => {
-const [colorStay, setColor] = useState('white');
+// const [colorStay, setColor] = useState('white');
+// date and time of when the function was last invoked
 const [lastInvokeTime, setLastInvokeTime] = useState('');
 const [lastInvokeDate, setLastInvokeDate] = useState('');
+// function logs from AWS lambda
 const [data, setData] = useState('')
+// state of if the function is currently being warmed
 const [warmed, setWarmed] = useState(false);
+// state of current status of the function (whether or not it's being invoked) 
 const [stopInvoke, setStopInvoke] = useState(true);
+// an object of setInterval ids for each function
 const [ids, setIds] = useState({});
 
 const handleClick = () => {
-  if (colorStay === 'white') setColor('#E3F2FD')
-  else setColor('white')
+  // if (colorStay === 'white') setColor('#E3F2FD')
+  // else setColor('white')
   props.handleDataChange(data);
 }
 
+// change warmed and stopInvoke state when buttons are clicked 
 const handleWarmButtons = () => {
   setWarmed(!warmed);
   setStopInvoke(!stopInvoke);
 }
 
+// saves the setInterval ids for each function that's being warmed into state
 const handleIds = (e) => {
   setIds(e);
 }
 
+//if function is warmed, render fire icon next to function name
 const fire = [];
 if (warmed) {
   fire.push(<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="orange" className="bi bi-fire" viewBox="0 0 16 16">
@@ -48,11 +56,13 @@ if (warmed) {
             </svg>)
 }
 
+//if function is clicked, show slider for that function
 const slider = [];
 if (props.current === props.index) {
   slider.push(<FunctionDetails Name={props.Name} externalId={props.externalId} arn={props.arn} region={props.region} handleWarmButtons={handleWarmButtons} warmed={warmed} stopInvoke={stopInvoke} ids={ids} handleIds={handleIds}/>)
 }
 
+// get request for the AWS Lamda logs 
 useEffect(() => {
   axios.get('http://localhost:3000/cloud/logs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {

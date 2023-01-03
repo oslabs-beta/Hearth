@@ -9,8 +9,4 @@ router.get('/logs', stsController.getCreds, cloudWatchController.getLogs, cloudW
   return res.status(200).json(res.locals.formattedLogs);
 });
 
-router.get('/metrics', cloudWatchController.getMetrics, (req, res) => {
-  return res.status(200).json(res.locals.metrics);
-});
-
 module.exports = router;

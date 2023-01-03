@@ -25,6 +25,7 @@ interface Props {
 
 
 const FunctionDetails = (props: Props) => {
+  // value for the slider
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
     5,
   );;
@@ -45,6 +46,7 @@ const FunctionDetails = (props: Props) => {
     }
   };
   
+  // get request to warm the functions
   const warmFunc = () => {
     axios.get('http://localhost:3000/aws/invokefuncs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
       .then((data) => {
@@ -53,6 +55,7 @@ const FunctionDetails = (props: Props) => {
       .catch((err) => console.log(`Error: ${err}`))
   }
 
+  // allow users to warm functions in specific intervals
   const handleWarmFunction = () => {
     warmFunc();
 
@@ -68,6 +71,7 @@ const FunctionDetails = (props: Props) => {
     }
   }
   
+  //stop function warming
   const handleStopWarming = () => {
     clearInterval(props.ids[props.Name])
 

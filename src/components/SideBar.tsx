@@ -8,8 +8,6 @@ import Functions from './Functions';
 
 const drawerWidth: number = 300;
 
-{/* <SideBar handleFunctionClick={handleFunctionClick} handleDataChange={handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region}/> */}
-
 
 interface Props {
   handleFunctionClick: (event: string) => void;
@@ -23,17 +21,18 @@ interface Props {
   const [funcs, setFuncs] = useState<Array<any>>([]);
   const [current, setCurrent] = useState<string | number>('');
 
+  // sets the current function that's open by function's index
   const handleCurrent = (e) => {
     setCurrent(e);
   }
 
-  console.log(current);
+  // console.log(current);
 
   const render: React.ReactElement[] = [];
 
+  //iterate through the array of functions
   funcs.forEach((el, index) => {
     // console.log(index)
-    //insert time of when func was last invoked
     render.push(
       <List component="div" disablePadding sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <Functions handleFunctionClick={props.handleFunctionClick} index={index} current={current} handleCurrent={handleCurrent} Name={el.Name} handleDataChange={props.handleDataChange} externalId={props.externalId} arn={props.arn} region={props.region} />
@@ -44,6 +43,7 @@ interface Props {
 
 
   useEffect(() => {
+    // get request to grab all the AWS lambda functions and save them in state
     axios.get('http://localhost:3000/aws/funcs', { params: { externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {
       console.log(data);
@@ -52,9 +52,10 @@ interface Props {
     .catch((err) => console.log(`Error: ${err}`))
   }, [])
 
-
+  
   const [open, setOpen] = React.useState<boolean>(false);
 
+  //if drawer is clicked reassign state to true or false
   const handleClick = () => {
     setOpen(!open);
   };

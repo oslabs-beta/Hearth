@@ -4,8 +4,10 @@ const { ControlPointSharp } = require("@mui/icons-material");
 const { raw } = require("express");
 const fetch = require('node-fetch');
 const { format } = require("path");
+
 const cloudWatchController = {};
 
+// gets logs reports in a raw format to be processed by the format logs function
 cloudWatchController.getLogs = async (req, res, next) => {
   const client = new CloudWatchLogs({ region: req.query.region,
   credentials: res.locals.creds });
@@ -15,19 +17,23 @@ cloudWatchController.getLogs = async (req, res, next) => {
     logGroupName: currentGroup /* required */
   };
   try {
-  const response = await client.describeLogStreams(searchParams);
-  const streams = response.logStreams;
-  for(let j = streams.length - 1; j >= streams.length - 6 && j >= 0; j--) {
-    const currentStream = streams[j].logStreamName;
-    const params = {
-      logGroupName: currentGroup, /* required */
-      logStreamName: currentStream, /* required */
-      startFromHead: true
+    // this request gets all log streams for a given function
+    const response = await client.describeLogStreams(searchParams);
+    const streams = response.logStreams;
+    // only get the most recent 6 log streams in order to not get too much data
+    for(let j = streams.length - 1; j >= streams.length - 6 && j >= 0; j--) {
+      const currentStream = streams[j].logStreamName;
+      const params = {
+        logGroupName: currentGroup, /* required */
+        logStreamName: currentStream, /* required */
+        startFromHead: true
     };
     try {
+      // this request gets all logs for the the from the given log stream
       const logs = await client.getLogEvents(params);
       const events = logs.events;
-      //reverse the events to put it from newest to oldest
+      // reverse the events to put it from newest to oldest
+      // only gives the report logs with the necessary information for formatting
       for(let i = events.length - 1; i >= 0; i--) {
         if(events[i].message.split(' ')[0] === 'REPORT') {
           allLogs.push(events[i]);
@@ -50,88 +56,44 @@ cloudWatchController.getLogs = async (req, res, next) => {
   return next();
 };
 
+// grabs the different metrics from the logs
 cloudWatchController.formatLogs = (req, res, next) => {
   try {
-    /*
-  const dateObject = new Date(timestamp); //declare new data object
-  const humanDataFormat = dateObject.toLocaleString('en-US', { timeZone: 'UTC' }); //convert to human-readable string
-  return humanDataFormat
-    */
-  const formattedLogs = [];
-  let rawLogs = res.locals.logs;
-  for(let i = 0; i < rawLogs.length; i++) {
-    const currentFormattedLog = {};
-    const dateObject = new Date(rawLogs[i].timestamp); //declare new data object
-    const formattedDate = dateObject.toLocaleString('en-US', { timeZone: 'UTC' }); //convert to human-readable string
-    const splitDate = formattedDate.split(', ');
-    currentFormattedLog.Time = splitDate[1];
-    currentFormattedLog.Date = splitDate[0];
-    //current log set everything
-    //duration, billed duration, init duration
-    //[REPORT RequestId: 46f43b92-21ac-40c7-a52d-885561fc0e2b, Duration: 10.42 ms, Billed Duration: 11 ms, Memory Size: 128 MB, Max Memory Used: 65 MB, Init Duration: 221.49 ms, \n],
-    let splitReport = rawLogs[i].message.split('\t');
-    splitReport.forEach(str => {
-      if(str[0] === 'D') {
-        let splitDuration = str.split(' ');
-        currentFormattedLog.Duration = splitDuration[1];
-      } else if(str[0] === 'B') {
-        let splitBilled = str.split(' ');
-        currentFormattedLog.BilledDuration = splitBilled[2];
-      } else if(str[0] === 'I') {
-        let splitInit = str.split(' ');
-        currentFormattedLog.InitDuration = splitInit[2];
-      } else if (str.split(' ')[0] === 'Max') {
-        let splitMemUsed = str.split(' ')
-        currentFormattedLog.MaxMemUsed = splitMemUsed[3];
-      }
-    });
-    formattedLogs.push(currentFormattedLog);
-  }
-  res.locals.formattedLogs = formattedLogs;
-  return next();
-} catch(err) {
-  return next({
-    log: `Error caught in cloudWatchController.formatLogs: ${err}`,
-    message: {err: 'An error occured while attempting to format logs'}
-  })
-}
-}
-
-cloudWatchController.getMetrics = async (req, res, next) => {
-  const client = new CloudWatchClient({ region: process.env.AWS_DEFAULT_REGION,
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    } });
-    //const metricNames = ['Errors', 'ConcurrentExecutions', 'Invocations', 'Duration', 'Throttles', 'UrlRequestCount', 'ColdStarts'];
-    //const datapointTypeNames = ['Average', 'Sum', 'Minimum', 'Maximum'];
-  //this gets the daily invocations of function Example2 from 12/10 to current
-  const input = {
-    "StartTime": new Date('December 10, 2022 03:24:00'), // "10/27/2022, 12:00:00 AM"
-    "EndTime": new Date(),
-    "MetricName": "Invocations",
-    "Namespace": "AWS/Lambda",
-    "Period": 3600, //req.body.period (60, 300, 3600) 
-    "Statistics": ["Sum", "Maximum", "Minimum", "Average"], //req.body.statistics (should be an array)
-    "Dimensions": [
-      {
-        "Name": "FunctionName",
-        "Value": "Example2"
-      }
-    ]
-  };
-
-  const command = new GetMetricStatisticsCommand(input);
-  try {
-    const response = await client.send(command);
-    res.locals.metrics = response;
+    const formattedLogs = [];
+    let rawLogs = res.locals.logs;
+    for(let i = 0; i < rawLogs.length; i++) {
+      const currentFormattedLog = {};
+      const dateObject = new Date(rawLogs[i].timestamp); //declare new data object
+      const formattedDate = dateObject.toLocaleString('en-US', { timeZone: 'UTC' }); //convert to human-readable string
+      const splitDate = formattedDate.split(', ');
+      currentFormattedLog.Time = splitDate[1];
+      currentFormattedLog.Date = splitDate[0];
+      let splitReport = rawLogs[i].message.split('\t');
+      splitReport.forEach(str => {
+        if(str[0] === 'D') { //Duration
+          let splitDuration = str.split(' ');
+          currentFormattedLog.Duration = splitDuration[1];
+        } else if(str[0] === 'B') { //Billed Duration
+          let splitBilled = str.split(' ');
+          currentFormattedLog.BilledDuration = splitBilled[2];
+        } else if(str[0] === 'I') { //Init Duration (if applicable)
+          let splitInit = str.split(' ');
+          currentFormattedLog.InitDuration = splitInit[2];
+        } else if (str.split(' ')[0] === 'Max') { //Max Mem Used
+          let splitMemUsed = str.split(' ')
+          currentFormattedLog.MaxMemUsed = splitMemUsed[3];
+        }
+      });
+      formattedLogs.push(currentFormattedLog);
+    }
+    res.locals.formattedLogs = formattedLogs;
     return next();
   } catch(err) {
     return next({
-      log: `Error caught in cloudWatchController.getLogs: ${err}`,
-      message: {err: 'An error occured while attempting to get logs'}
+      log: `Error caught in cloudWatchController.formatLogs: ${err}`,
+      message: {err: 'An error occured while attempting to format logs'}
     })
   }
-};
+}
 
 module.exports = cloudWatchController;
