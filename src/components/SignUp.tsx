@@ -40,7 +40,7 @@ const SignUp = (props) => {
         body: JSON.stringify(userData)
       }
       console.log(userData);
-      const result = await fetch('http://localhost:3000/user/signup', reqBody);
+      const result = await fetch('https://hearth-373718.wl.r.appspot.com/user/signup', reqBody);
       const data = await result.json();
       if(data === 'Signup Successful!') {
       alert('Signup successful!');
