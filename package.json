@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
     "electron": "electron ./dist/electron.js",
-    "start": "electron-forge start",
+    "start": "npm run build && electron ./dist/electron.js & node server/server.js",
     "startMon": "npm run build && electronmon ./dist/electron.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server/server.js",
