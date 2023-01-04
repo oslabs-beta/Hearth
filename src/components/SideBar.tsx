@@ -46,7 +46,7 @@ interface Props {
     // get request to grab all the AWS lambda functions and save them in state
     axios.get('http://localhost:3000/aws/funcs', { params: { externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       setFuncs(data.data);
     })
     .catch((err) => console.log(`Error: ${err}`))
