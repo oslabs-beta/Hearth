@@ -64,7 +64,7 @@ if (props.current === props.index) {
 
 // get request for the AWS Lamda logs 
 useEffect(() => {
-  axios.get('http://localhost:3000/cloud/logs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
+  axios.get('https://hearth-373718.wl.r.appspot.com/cloud/logs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {
       // console.log(data);
       setLastInvokeTime(data.data[0].Time);
