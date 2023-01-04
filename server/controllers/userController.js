@@ -3,6 +3,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { ProvisionedConcurrencyStatusEnum } = require("@aws-sdk/client-lambda");
 
 //DATABASE
 
@@ -103,6 +104,13 @@ userController.login = async (req, res, next) => {
       message: {err: 'An error occured while attempting to login'}
     })
   }
+}
+
+userController.test = (req, res, next) => {
+  res.locals.test = {
+    AWS_DEFAULT_REGION: process.env.AWS_DEFAULT_REGION
+  }
+  return next();
 }
 
 module.exports = userController

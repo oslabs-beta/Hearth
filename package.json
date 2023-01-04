@@ -2,16 +2,10 @@
   "name": "hearth",
   "version": "1.0.0",
   "description": "An application to help minimize cold starts in AWS Lambda functions.",
-  "main": "src/electron.ts",
+  "main": "server/server.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
-    "electron": "electron ./dist/electron.js",
-    "start": "npm run build && electron ./dist/electron.js & node server/server.js",
-    "startMon": "npm run build && electronmon ./dist/electron.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server/server.js",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "start": "node server/server.js",
+    "server": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
