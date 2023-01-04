@@ -9,7 +9,9 @@
     "start": "npm run build && electron ./dist/electron.js & node server/server.js",
     "startMon": "npm run build && electronmon ./dist/electron.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server/server.js"
+    "server": "nodemon server/server.js",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
+    "@electron-forge/cli": "^6.0.4",
+    "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-rpm": "^6.0.4",
+    "@electron-forge/maker-squirrel": "^6.0.4",
+    "@electron-forge/maker-zip": "^6.0.4",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "babel-loader": "^9.1.0",
@@ -50,11 +57,12 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.0",
     "axios": "^1.2.1",
-    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "chart.js": "^4.1.1",
     "css-loader": "^6.7.2",
     "dotenv": "^16.0.3",
     "electron-reload": "1.5.0",
+    "electron-squirrel-startup": "^1.0.0",
     "electronmon": "^2.0.2",
     "express": "^4.18.2",
     "faker": "^6.6.6",

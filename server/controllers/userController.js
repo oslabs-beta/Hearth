@@ -1,6 +1,6 @@
 const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 require('dotenv').config();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 
