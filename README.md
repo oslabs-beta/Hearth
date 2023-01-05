@@ -15,7 +15,7 @@ So what was our solution to assist developers in combating cold starts? Hearth. 
 
 Please follow the steps to get started:
 
-1. Download Hearth [here](https://www.hearthlambda.io).
+1. Download Hearth [here](https://github.com/oslabs-beta/Hearth/releases/download/v.1.0.0/hearth-darwin-x64-1.0.0.zip).
 
    MacOS:
 
