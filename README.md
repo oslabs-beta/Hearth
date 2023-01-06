@@ -20,7 +20,7 @@ Please follow the steps to get started:
    MacOS:
 
    1. Double click to unzip and open the 'hearth-darwin-x64-1.0.0.zip' file.
-   2. Right click to open Hearth. **Do not double click the application**.
+   2. Right click to open Hearth. **Do not double click the application**.  If the open button does not appear, close it and try to open it again. It should then appear as pictured below.
    3. Click 'open' on the pop up window to launch Hearth.
    <p>
      <img src= "./src/popup.png" width="250px">
