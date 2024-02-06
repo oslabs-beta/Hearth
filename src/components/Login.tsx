@@ -34,7 +34,7 @@ const Login = (props: Props) => {
     }
 
 
-    const result = await fetch('https://hearth-373718.wl.r.appspot.com/user/login', reqBody);
+    const result = await fetch('http://hearth.us-west-1.elasticbeanstalk.com/user/login', reqBody);
     const data = await result.json();
     //if there is an arn in the returned data, that means the login was successful
     if(data.arn) {
