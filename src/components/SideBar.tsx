@@ -44,7 +44,7 @@ interface Props {
 
   useEffect(() => {
     // get request to grab all the AWS lambda functions and save them in state
-    axios.get('https://hearth-373718.wl.r.appspot.com/aws/funcs', { params: { externalId: props.externalId, arn: props.arn, region: props.region }})
+    axios.get('http://hearth.us-west-1.elasticbeanstalk.com/aws/funcs', { params: { externalId: props.externalId, arn: props.arn, region: props.region }})
     .then((data) => {
       //console.log(data);
       setFuncs(data.data);

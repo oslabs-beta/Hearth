@@ -48,7 +48,7 @@ const FunctionDetails = (props: Props) => {
   
   // get request to warm the functions
   const warmFunc = () => {
-    axios.get('https://hearth-373718.wl.r.appspot.com/aws/invokefuncs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
+    axios.get('http://hearth.us-west-1.elasticbeanstalk.com/aws/invokefuncs', { params: { funcName: props.Name, externalId: props.externalId, arn: props.arn, region: props.region }})
       .then((data) => {
         console.log(data)
       })
