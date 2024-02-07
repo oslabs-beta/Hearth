@@ -1,9 +1,4 @@
-const { CloudWatchClient, GetMetricStatisticsCommand, CloudWatch } = require("@aws-sdk/client-cloudwatch");
 const { CloudWatchLogs } = require("@aws-sdk/client-cloudwatch-logs");
-const { ControlPointSharp } = require("@mui/icons-material");
-const { raw } = require("express");
-const fetch = require('node-fetch');
-const { format } = require("path");
 
 const cloudWatchController = {};
 
